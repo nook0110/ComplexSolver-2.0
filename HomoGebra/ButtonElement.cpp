@@ -20,5 +20,4 @@ GeometricObjectType* ObjectSelector<GeometricObjectType>::operator()() const
 template class ObjectSelector<GeometricObject>;
 template class ObjectSelector<Point>;
 template class ObjectSelector<Line>;
-template class ObjectSelector<Conic>;
 }  // namespace HomoGebra

@@ -134,7 +134,4 @@ template std::vector<GeometricObject*> PlaneImplementation::GetObjects<Point>()
 
 template std::vector<GeometricObject*> PlaneImplementation::GetObjects<Line>()
     const;
-
-template std::vector<GeometricObject*> PlaneImplementation::GetObjects<Conic>()
-    const;
 }  // namespace HomoGebra

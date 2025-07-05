@@ -29,7 +29,6 @@ template std::vector<GeometricObject*> Plane::GetObjects<GeometricObject>()
 
 template std::vector<GeometricObject*> Plane::GetObjects<Point>() const;
 template std::vector<GeometricObject*> Plane::GetObjects<Line>() const;
-template std::vector<GeometricObject*> Plane::GetObjects<Conic>() const;
 
 void Plane::UpdateBodies(const sf::RenderTarget& target) const
 {

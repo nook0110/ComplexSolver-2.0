@@ -117,30 +117,4 @@ struct LineByTwoPointsFactory
  private:
   Plane* plane_{};
 };
-
-/**
- * \struct ConicOnPlaneFactory
- * \brief Factory struct for constructing conics on a plane.
- */
-struct ConicOnPlaneFactory
-{
-  /**
-   * \brief Constructs a ConicOnPlaneFactory object with the given plane.
-   *
-   * \param plane The plane on which the conics will be constructed.
-   */
-  explicit ConicOnPlaneFactory(Plane* plane) : plane_(plane) { Assert(plane); }
-
-  /**
-   * \brief Constructs a conic with the given equation.
-   *
-   * \param equation The equation of the conic.
-   *
-   * \return Pointer to the constructed conic.
-   */
-  Conic* operator()(ConicEquation equation) const;
-
- private:
-  Plane* plane_{};
-};
 }  // namespace HomoGebra

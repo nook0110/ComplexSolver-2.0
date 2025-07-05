@@ -49,5 +49,4 @@ void NearbyObjectGetter<GeometricObjectType>::FindNearestObject(
 template class NearbyObjectGetter<GeometricObject>;
 template class NearbyObjectGetter<Point>;
 template class NearbyObjectGetter<Line>;
-template class NearbyObjectGetter<Conic>;
 }  // namespace HomoGebra

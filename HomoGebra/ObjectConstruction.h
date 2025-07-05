@@ -3,6 +3,8 @@
 #include "Construction.h"
 #include "Equation.h"
 
+#include <memory>
+
 namespace HomoGebra
 {
 class GeometricObject;
@@ -253,84 +255,5 @@ class ByTwoPoints final : public ConstructionLine, public StrongConstruction
  private:
   Point* first_point_;   //!< First point.
   Point* second_point_;  //!< Second point.
-};
-
-/**
- * \brief Base class for all conic constructions.
- *
- * \author nook0110
- *
- * \version 1.0
- *
- * \date July 2023
- */
-class ConstructionConic : public Construction
-{
- public:
-  /**
-   * \brief Gets object that is constructed.
-   *
-   * \return Object that is constructed.
-   */
-  [[nodiscard]] GeometricObject* GetObject() const override;
-
-  /**
-   * \brief Gets conic.
-   *
-   * \return Contained conic.
-   */
-  [[nodiscard]] Conic* GetConic() const;
-
-  /**
-   * \brief Recalculate equation of conic.
-   */
-  void RecalculateEquation() override = 0;
-
-  void Update(const ObjectEvent::GoingToBeDestroyed& event) override;
-
-  void Update(const ObjectEvent::Renamed& event) override;
-
- protected:
-  /**
-   * \brief Default constructor.
-   *
-   */
-  ConstructionConic() = default;
-
-  /**
-   * \brief Sets equation of conic.
-   *
-   * \param equation Equation of conic.
-   */
-  void SetEquation(ConicEquation equation) const;
-
- private:
-  std::unique_ptr<Conic> conic_ =
-      std::make_unique<Conic>();  //!< Conic, which is created.
-};
-
-/**
- * \brief Construction of a casual conic on a plane.
- *
- * \author nook0110
- *
- * \version 1.0
- *
- * \date July 2023
- */
-class ConicOnPlane final : public ConstructionConic, public StrongConstruction
-{
- public:
-  /**
-   * \brief Constructs conic by equation.
-   *
-   * \param equation Equation of conic.
-   */
-  explicit ConicOnPlane(ConicEquation equation);
-
-  void RecalculateEquation() override;
-
- private:
-  ConicEquation equation_;  //!< Equation of conic.
 };
 }  // namespace HomoGebra

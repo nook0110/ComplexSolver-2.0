@@ -50,6 +50,4 @@ template Point* ObjectProvider::GetNearestObject(const sf::Vector2f& position,
                                                  Distance max_distance);
 template Line* ObjectProvider::GetNearestObject(const sf::Vector2f& position,
                                                 Distance max_distance);
-template Conic* ObjectProvider::GetNearestObject(const sf::Vector2f& position,
-                                                 Distance max_distance);
 }  // namespace HomoGebra

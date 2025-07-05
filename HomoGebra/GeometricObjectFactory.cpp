@@ -61,23 +61,4 @@ Line* LineByTwoPointsFactory::operator()(Point* first, Point* second) const
   // Return line
   return line;
 }
-
-Conic* ConicOnPlaneFactory::operator()(ConicEquation equation) const
-{
-  // Create construction
-  auto construction = std::make_unique<ConicOnPlane>(std::move(equation));
-
-  const auto conic = construction->GetConic();
-
-  // Add construction to plane
-  plane_->AddConstruction(std::move(construction));
-
-  const auto& name_generator = plane_->GetNameGenerator();
-
-  // Rename conic
-  conic->SetName(static_cast<std::string>(name_generator.GenerateName()));
-
-  // Return conic
-  return conic;
-}
 }  // namespace HomoGebra

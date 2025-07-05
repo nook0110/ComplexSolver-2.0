@@ -1,34 +1,9 @@
 #pragma once
 #include <array>
 
-#include "Coordinate.h"
+#include "Var.h"
 
-namespace HomoGebra
-{
-/**
- * \brief Struct that defines position of the objects.
- *
- * \author nook0110
- *
- * \version 1.0
- *
- * \date February 2023
- *
- */
-struct EquationBase
-{
-  /**
-   * Default destructor.
-   */
-  virtual ~EquationBase() = default;
-
-  /**
-   * \brief Apply transformation to an equation.
-   *
-   * \param transformation Transformation to apply.
-   */
-  virtual void Apply(const Transformation& transformation) = 0;
-};
+namespace HomoGebra {
 
 /**
  * \brief Struct that defines position of the point.
@@ -42,38 +17,55 @@ struct EquationBase
  * \see PointImplementation
  *
  */
-struct PointEquation final : public EquationBase
-{
+class PointEquation {
+ public:
+  struct Equation {
+    float x;
+    float y;
+
+    float& operator[](Var var) {
+      switch (var) {
+        case Var::kX:
+          return x;
+        case Var::kY:
+          return y;
+      }
+    }
+    const float& operator[](Var var) const {
+      switch (var) {
+        case Var::kX:
+          return x;
+        case Var::kY:
+          return y;
+      }
+    }
+  };
+
   /**
    * \brief Constructor.
    *
    * \param equation Equation of point.
    */
-  explicit PointEquation(
-      HomogeneousCoordinate equation = HomogeneousCoordinate{});
-
-  /**
-   * \brief Apply transformation to a point equation.
-   *
-   * \param transformation Transformation to apply.
-   */
-  void Apply(const Transformation& transformation) override;
+  explicit PointEquation() = default;
 
   /**
    * \brief Return current equation of point.
    *
    * \return Point equation.
    */
-  [[nodiscard]] HomogeneousCoordinate& GetEquation();
+  [[nodiscard]] PointEquation::Equation& GetEquation() { return equation_; }
 
   /**
    * \brief Return current equation of point.
    *
    * \return Point equation.
    */
-  [[nodiscard]] const HomogeneousCoordinate& GetEquation() const;
+  [[nodiscard]] const PointEquation::Equation& GetEquation() const {
+    return equation_;
+  }
 
-  HomogeneousCoordinate equation;  //!< Equation of point.
+ private:
+  Equation equation_;
 };
 
 /**
@@ -88,75 +80,37 @@ struct PointEquation final : public EquationBase
  * \see LineImplementation
  *
  */
-struct LineEquation final : public EquationBase
-{
+class LineEquation {
+ public:
+  struct Equation {
+    float A;
+    float B;
+    float C;
+  };
   /**
    * \brief Constructor.
    *
    * \param equation Equation of line.
    */
-  explicit LineEquation(
-      HomogeneousCoordinate equation = HomogeneousCoordinate{});
+  explicit LineEquation() = default;
 
   /**
-   * \brief Apply transformation to a conic equation.
+   * \brief Return current equation of point.
    *
-   * \warning It will multiply on inverse of transformation. Because if you
-   * substitute an image of point, equation should equal to zero.
-   *
-   * \param transformation Transformation to apply.
+   * \return Point equation.
    */
-  void Apply(const Transformation& transformation) override;
-
-  HomogeneousCoordinate equation;  //!< Equation of line
-};
-
-/**
- * \brief Struct that defines position of the conic
- *
- * \author nook0110
- *
- * \version 1.0
- *
- * \date February 2023
- *
- * \see ConicImplementation
- *
- */
-struct ConicEquation final : public EquationBase
-{
-  /**
-   * \name Static arrays to get next o previous vars.
-   *
-   * It is used to get from Equation::Var next or previous Equation::Var
-   */
-
-  /// @{
-  static constexpr std::array<Var, 3> kPrev = {Var::kZ, Var::kX,
-                                               Var::kY};  //!< Previous var
-  static constexpr std::array<Var, 3> kNext = {Var::kY, Var::kZ,
-                                               Var::kX};  //!< Next var
-  /// @}
+  [[nodiscard]] LineEquation::Equation& GetEquation() { return equation_; }
 
   /**
-   * \brief Apply transformation to a conic equation.
+   * \brief Return current equation of point.
    *
-   * \warning This method is not implemented!
-   *
-   * \param transformation Transformation to apply.
+   * \return Point equation.
    */
-  void Apply(const Transformation& transformation) override;
+  [[nodiscard]] const LineEquation::Equation& GetEquation() const {
+    return equation_;
+  }
 
-  /**
-   * \name Equation
-   *
-   * Conic equation in \f$ \mathbb {C}\mathrm {P} ^ 2 \f$ is
-   * \f$ a \cdot x^2 + b \cdot y^2 + c \cdot z^2 + d \cdot yz + e \cdot xz + f
-   * \cdot xy \f$
-   */
-  /// @{
-  std::array<Complex, 3> squares;        //!< \f$ a, b, c \f$
-  std::array<Complex, 3> pair_products;  //!< \f$ d, e, f \f$
-  /// @}
+ private:
+  Equation equation_;
 };
 }  // namespace HomoGebra

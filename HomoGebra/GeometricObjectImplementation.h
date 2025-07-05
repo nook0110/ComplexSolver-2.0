@@ -2,6 +2,9 @@
 #include "Construction.h"
 #include "Equation.h"
 #include "Observer.h"
+
+#include <memory>
+
 class GeometricObject;
 
 namespace HomoGebra
@@ -115,47 +118,5 @@ class LineImplementation : public GeometricObjectImplementation
    * Member data.
    */
   LineEquation equation_;  //!< Line equation.
-};
-
-/**
- * \brief Implementation of Conic
- *
- * \author nook0110
- *
- * \version 1.0
- *
- * \date April 2023
- *
- * \see Conic
- */
-class ConicImplementation final : public GeometricObjectImplementation
-{
- public:
-  /**
-   * \brief Construct a conic with given equation.
-   *
-   * \param equation Equation of conic.
-   */
-  explicit ConicImplementation(ConicEquation equation = ConicEquation());
-
-  /**
-   * \brief Sets new equation of conic.
-   *
-   * \param equation Equation of conic.
-   */
-  void SetEquation(ConicEquation equation);
-
-  /**
-   * \brief Return equation of conic.
-   *
-   * \return Conic equation.
-   */
-  [[nodiscard]] const ConicEquation& GetEquation() const;
-
- private:
-  /**
-   * Member data.
-   */
-  ConicEquation equation_;  //!< Conic equation.
 };
 }  // namespace HomoGebra

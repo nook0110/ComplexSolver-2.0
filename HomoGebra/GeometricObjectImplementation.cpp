@@ -41,23 +41,4 @@ const LineEquation& LineImplementation::GetEquation() const
   // Return equation
   return equation_;
 }
-
-ConicImplementation::ConicImplementation(ConicEquation equation)
-    : equation_(std::move(equation))
-{}
-
-void ConicImplementation::SetEquation(ConicEquation equation)
-{
-  // Set equation
-  equation_ = std::move(equation);
-
-  // Notify observers
-  Notify(ObjectEvent::Moved());
-}
-
-const ConicEquation& ConicImplementation::GetEquation() const
-{
-  // Return equation
-  return equation_;
-}
 }  // namespace HomoGebra

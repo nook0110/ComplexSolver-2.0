@@ -2,8 +2,6 @@
 #include <optional>
 #include <vector>
 
-#include "Complex.h"
-
 namespace HomoGebra
 {
 /**
@@ -161,6 +159,5 @@ class SquaredMatrix
   size_t size_{};          //!< Size of matrix
 };
 
-using ComplexSquaredMatrix = SquaredMatrix<Complex>;
 using FloatSquaredMatrix = SquaredMatrix<float>;
 }  // namespace HomoGebra

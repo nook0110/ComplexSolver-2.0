@@ -217,28 +217,9 @@ std::optional<PointBody::ProjectivePosition> PointBody::CalculatePosition(
   // Get equation
   const auto& eq = equation.GetEquation();
 
-  // Normalize equation
-  const auto normalized_eq = eq.GetNormalized();
-
-  // Check if point lies on the "R-plane" which we see
-  if (!normalized_eq.x.IsReal() || !normalized_eq.y.IsReal())
-  {
-    return std::nullopt;
-  }
-
-  // Check if point is at infinity
-  if (normalized_eq[Var::kZ].IsZero())
-  {
-    return ProjectivePosition{
-        sf::Vector2f(static_cast<float>(normalized_eq.x.real()),
-                     static_cast<float>(normalized_eq.y.real())),
-        true};
-  }
-
-  // Return position
   return ProjectivePosition{
-      sf::Vector2f(static_cast<float>(normalized_eq.x.real()),
-                   static_cast<float>(normalized_eq.y.real())),
+      sf::Vector2f(static_cast<float>(eq.x),
+                   static_cast<float>(eq.y)),
       false};
 }
 
@@ -257,22 +238,16 @@ float PointBody::CalculateSizeOfBody(const sf::RenderTarget& target)
   return size;
 }
 
-void LineBody::Update(const LineEquation& equation)
+void LineBody::Update(const LineEquation& line_equation)
 {
   // Normalize equation
-  const auto normalized_equation = equation.equation.GetNormalized();
-
-  // Check if line is in 'real' plane
-  if (!(normalized_equation.x.IsReal() && normalized_equation.y.IsReal()))
-  {
-    equation_ = std::nullopt;
-  }
+  const auto& equation = line_equation.GetEquation();
 
   // Set equation
   Equation body_equation{
-      static_cast<float>(static_cast<long double>(normalized_equation.x)),
-      static_cast<float>(static_cast<long double>(normalized_equation.y)),
-      static_cast<float>(static_cast<long double>(normalized_equation.z))};
+      static_cast<float>(equation.A),
+      static_cast<float>(equation.B),
+      static_cast<float>(equation.C)};
 
   equation_ = body_equation;
 }
@@ -347,269 +322,5 @@ float LineBody::Equation::Solve(const Var var, const float another) const
       Assert(false, "Invalid variable");
   }
   return float{};
-}
-
-void ConicBody::Update(const sf::RenderTarget& target,
-                       const ConicEquation& equation)
-{
-  UpdateEquation(equation);
-  UpdateBodyLines(target);
-}
-
-void ConicBody::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-  // Draw lines
-  std::ranges::for_each(body_lines.lines_x, [&target](const auto& line)
-                        { ThickLineDrawer{}.Draw(target, line, 3.f); });
-
-  std::ranges::for_each(body_lines.lines_y, [&target](const auto& line)
-                        { ThickLineDrawer{}.Draw(target, line, 3.f); });
-}
-
-Distance ConicBody::GetDistance(const sf::Vector2f& position) const
-{
-  Distance distance = std::numeric_limits<Distance>::max();
-  std::ranges::for_each(
-      body_lines.lines_x,
-      [&distance, &position](const auto& line)
-      {
-        std::ranges::for_each(
-            line,
-            [&distance, &position](const auto& vertex) {
-              distance = std::min(distance, Length(vertex.position - position));
-            });
-      });
-
-  std::ranges::for_each(
-      body_lines.lines_y,
-      [&distance, &position](const auto& line)
-      {
-        std::ranges::for_each(
-            line,
-            [&distance, &position](const auto& vertex) {
-              distance = std::min(distance, Length(vertex.position - position));
-            });
-      });
-
-  return distance;
-}
-
-void ConicBody::UpdateEquation(const ConicEquation& equation)
-{
-  const auto normalizer = Complex{1} / equation.squares.front();
-
-  auto [squares, pair_product, linears, constant] = Equation{};
-  /*
-   A*x^2 + B*y^2 + C*z^2 +
-   D*yz + E*xz + F*xy = 0
-
-   Transforms into:
-
-   A*x^2 + B*y^2 + || squares
-   F*xy +          || pair product
-   E*x*1 + D*y*1 + || linears
-   C*1^2 = 0       || constant
-   */
-
-  // A*x^2 + B*y^2 + || squares
-
-  const auto normalized_square_x =
-      equation.squares[static_cast<size_t>(Var::kX)] * normalizer;
-  if (!normalized_square_x.IsReal())
-  {
-    equation_ = std::nullopt;
-    return;
-  }
-
-  squares[static_cast<size_t>(Var::kX)] = normalized_square_x;
-  squares[static_cast<size_t>(Var::kY)] =
-      equation.squares[static_cast<size_t>(Var::kY)] * normalizer;
-
-  // F*xy +          || pair product
-  pair_product =
-      equation.pair_products[static_cast<size_t>(Var::kZ)] * normalizer;
-
-  // E*x*1 + D*y*1 + || linears
-  linears[static_cast<size_t>(Var::kX)] =
-      equation.pair_products[static_cast<size_t>(Var::kY)] * Complex{1} *
-      normalizer;
-  linears[static_cast<size_t>(Var::kY)] =
-      equation.pair_products[static_cast<size_t>(Var::kX)] * Complex{1} *
-      normalizer;
-
-  // C*1^2 = 0       || constant
-  constant = equation.squares[static_cast<size_t>(Var::kZ)] * Complex{1} *
-             Complex{1} * normalizer;
-
-  equation_ = Equation{squares, pair_product, linears, constant};
-}
-
-void ConicBody::UpdateBodyLines(const sf::RenderTarget& target)
-{
-  auto& [lines_x, lines_y, thickness] = body_lines;
-  lines_x.clear();
-  lines_y.clear();
-
-  if (!equation_)
-  {
-    return;
-  }
-
-  thickness = CalculateSizeOfBody(target);
-
-  // Acquire render region center and size
-  const auto& render_region_center = target.getView().getCenter();
-  const auto kDelta = 2.f * sf::Vector2f{thickness, thickness};
-  const auto& render_region_size = target.getView().getSize() + kDelta;
-
-  // Calculate render region corner
-  const auto corner = render_region_center - render_region_size / 2.f;
-
-  const sf::FloatRect rendering_region{corner, render_region_size};
-
-  // Calculate amount of steps needed and their size
-  const size_t steps = std::max(target.getSize().x, target.getSize().y) / 2;
-  const auto step_size = render_region_size / static_cast<float>(steps);
-
-  lines_x.reserve(4);
-  lines_y.reserve(4);
-  lines_x.resize(2);
-  lines_y.resize(2);
-
-  for (size_t step = 0; step < steps; ++step)
-  {
-    // Calculate position of current step
-    const auto pos = corner + step_size * static_cast<float>(step);
-
-    // Calculate roots of equation
-    // Check if roots are real and add them to line
-    auto roots_x = equation_.value().Solve(
-        Var::kX, Complex{static_cast<long double>(pos.y)});
-
-    for (size_t root_number = 0; root_number < roots_x.size(); ++root_number)
-    {
-      auto& root = roots_x[root_number];
-      if (root && root.value().IsReal() &&
-          rendering_region.contains({static_cast<float>(root.value()), pos.y}))
-      {
-        lines_x[lines_x.size() - 1 - root_number].emplace_back(sf::Vertex(
-            {static_cast<float>(root.value()), pos.y}, sf::Color::Black));
-      }
-    }
-
-    if (std::ranges::all_of(roots_x,
-                            [](const auto& root)
-                            {
-                              return !root.has_value() ||
-                                     !root.value().IsReal();
-                            }) /*check for discontinuity*/
-        && !lines_x.back().empty() /*check if need to resize*/)
-    {
-      lines_x.resize(lines_x.size() + roots_x.size());
-    }
-
-    // Calculate roots of equation
-    // Check if roots are real and add them to line
-    auto roots_y = equation_.value().Solve(
-        Var::kY, Complex{static_cast<long double>(pos.x)});
-
-    for (size_t root_number = 0; root_number < roots_y.size(); ++root_number)
-    {
-      auto& root = roots_y[root_number];
-
-      if (root && root.value().IsReal() &&
-          rendering_region.contains({pos.x, static_cast<float>(root.value())}))
-      {
-        lines_y[lines_y.size() - 1 - root_number].emplace_back(sf::Vertex(
-            {pos.x, static_cast<float>(root.value())}, sf::Color::Black));
-      }
-    }
-
-    if (std::ranges::all_of(roots_y,
-                            [](const auto& root)
-                            {
-                              return !root.has_value() ||
-                                     !root.value().IsReal();
-                            }) /*check for discontinuity*/
-        && !lines_y.back().empty() /*check if need to resize*/)
-    {
-      lines_y.resize(lines_y.size() + roots_y.size());
-    }
-  }
-
-  Expect(lines_x.size() <= 4);
-  Expect(lines_y.size() <= 4);
-}
-
-float ConicBody::CalculateSizeOfBody(const sf::RenderTarget& target)
-{
-  // Calculate size of pixel
-  const auto pixel_size = CalculateSizeOfPixel(target);
-
-  // Ratio of size of body to size of pixel
-  constexpr float kRatio = std::numbers::pi_v<float>;
-
-  // Calculate size of body
-  const auto size = pixel_size * kRatio;
-
-  // Return size of body
-  return size;
-}
-
-[[nodiscard]] inline std::array<std::optional<Complex>, 2>
-SolveQuadraticEquation(const Complex& quadratic_coefficient,
-                       const Complex& linear_coefficient,
-                       const Complex& constant_coefficient)
-{
-  // Check if a is zero
-  if (quadratic_coefficient.IsZero())
-  {
-    if (linear_coefficient.IsZero())
-    {
-      return {std::nullopt, std::nullopt};
-    }
-
-    auto root = -constant_coefficient / linear_coefficient;
-    return {root, std::nullopt};
-  }
-
-  // ax^2+bx+c=0
-  // x = (-b +- sqrt(discriminant)) / 2a
-
-  // Calculate discriminant
-  const auto discriminant =
-      linear_coefficient * linear_coefficient -
-      Complex{4} * quadratic_coefficient * constant_coefficient;
-
-  const auto discriminant_root = sqrt(discriminant);
-
-  const auto first_root = (-linear_coefficient + discriminant_root) /
-                          (Complex{2} * quadratic_coefficient);
-  const auto second_root = (-linear_coefficient - discriminant_root) /
-                           (Complex{2} * quadratic_coefficient);
-
-  return {first_root, second_root};
-}
-
-ConicBody::Equation::Solution ConicBody::Equation::Solve(
-    Var var, const Complex& another) const
-{
-  // Ax^2 + Bxy + Cy^2 + Dx + Ey + F = 0
-  // Ax^2 + (By+D)x + (Cy^2 + Ey + F) = 0
-  const auto another_var = kAnother[static_cast<size_t>(var)];
-
-  const auto& /* A */ quadratic_coefficient = squares[static_cast<size_t>(var)];
-
-  const auto /* (By+D) */ linear_coefficient =
-      /* By */ pair_product * another +
-      /* D */ linears[static_cast<size_t>(var)];
-
-  const auto /* (Cy^2 + Ey + F) */ constant_coefficient =
-      /* Cy^2 */ squares[static_cast<size_t>(another_var)] * another * another +
-      /* Ey */ linears[static_cast<size_t>(another_var)] * another +
-      /* F */ constant;
-
-  return SolveQuadraticEquation(quadratic_coefficient, linear_coefficient,
-                                constant_coefficient);
 }
 }  // namespace HomoGebra

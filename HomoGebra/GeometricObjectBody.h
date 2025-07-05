@@ -5,6 +5,7 @@
 #include "DistanceUtilities.h"
 #include "GeometricObjectImplementation.h"
 #include "NameGenerator.h"
+#include "Var.h"
 
 namespace HomoGebra
 {
@@ -304,113 +305,5 @@ class LineBody final : public ObjectBody
   };
 
   std::optional<Equation> equation_;  //!< Equation of the line.
-};
-
-/**
- * \brief Body of a conic.
- *
- * \author nook0110
- *
- * \version 1.0
- *
- * \date February 2023
- */
-class ConicBody : public ObjectBody
-{
- public:
-  /**
-   * \brief Default constructor.
-   *
-   */
-  ConicBody() = default;
-
-  /**
-   * \brief Destructor.
-   *
-   */
-  ~ConicBody() override = default;
-
-  /**
-   * \brief Updates the conic body.
-   *
-   * \param equation Equation of the conic.
-   */
-  void Update(const sf::RenderTarget& target, const ConicEquation& equation);
-
-  /**
-   * \brief Draw conic to a render target.
-   *
-   * \param target Render target to draw to.
-   * \param states Current render states.
-   */
-  void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-  Distance GetDistance(const sf::Vector2f& position) const override;
-
- private:
-  /**
-   * \brief Body of lines.
-   *   *
-   * \author nook0110
-   *   *
-   * \version 1.0
-   *   *
-   * \date April 2024
-   */
-  struct BodyLines
-  {
-    using Line = std::vector<sf::Vertex>;
-    using Lines = std::vector<Line>;
-    Lines lines_x;    //!< Lines parallel to x-axis.
-    Lines lines_y;    //!< Lines parallel to y-axis.
-    float thickness;  //!< Thickness of the lines.
-  };
-
-  /**
-   * \brief Equation of a conic that lies on a real plane.
-   *
-   */
-  struct Equation
-  {
-    static constexpr std::array<Var, 2> kAnother = {
-        Var::kY, Var::kX};  //!< Another variable of each variable.
-
-    using Solution = std::array<std::optional<Complex>,
-                                2>;  //!< Solution of the equation.
-
-    /**
-     * \brief Solves the equation for variable.
-     *
-     * \param var Variable to solve for.
-     * \param another Another variable value.
-     *
-     * \return Solution of the equation.
-     */
-    [[nodiscard]] Solution Solve(Var var, const Complex& another) const;
-
-    std::array<Complex, 2>
-        squares;           //!< Coefficient of the squares of the variables.
-    Complex pair_product;  //!< Coefficient of the product of the variables.
-    std::array<Complex, 2> linears;  //!< Coefficient of the variables.
-    Complex constant;                //!< Constant coefficient.
-  };
-
-  void UpdateEquation(const ConicEquation& equation);
-  void UpdateBodyLines(const sf::RenderTarget& target);
-
-  /**
-   * \brief Calculates size of a body
-   *
-   * \details Calculates size of pixel and than multiply size on a const
-   *
-   * \param target Render target to draw to.
-   *
-   * \return Size of body.
-   */
-  static float CalculateSizeOfBody(const sf::RenderTarget& target);
-
-  BodyLines body_lines;  //!< Body of the conic.
-
-  std::optional<Equation> equation_;  //!< Equation of the conic.
 };
 }  // namespace HomoGebra

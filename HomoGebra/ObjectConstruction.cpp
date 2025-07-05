@@ -56,7 +56,7 @@ PointOnPlane::PointOnPlane(PointEquation equation)
 void PointOnPlane::RecalculateEquation()
 {
   // Set equation
-  SetEquation(equation_);
+  // SetEquation(equation_);
 }
 
 GeometricObject* ConstructionLine::GetObject() const
@@ -108,7 +108,7 @@ LineOnPlane::LineOnPlane(LineEquation equation) : equation_(std::move(equation))
 void LineOnPlane::RecalculateEquation()
 {
   // Set equation
-  SetEquation(equation_);
+  // SetEquation(equation_);
 }
 
 ByTwoPoints::ByTwoPoints(Point* first_point, Point* second_point)
@@ -146,7 +146,7 @@ void ByTwoPoints::RecalculateEquation()
   const auto& s_equation = second_point_->GetEquation().GetEquation();
 
   // Create matrix
-  HomoGebra::ComplexSquaredMatrix matrix{3};
+  HomoGebra::FloatSquaredMatrix matrix{3};
 
   // Get first row
   auto& first_row = matrix[0];
@@ -176,21 +176,7 @@ void ByTwoPoints::RecalculateEquation()
                                                                    kUpperBound);
   std::default_random_engine default_random_engine;
 
-  // Set third row
-  std::ranges::for_each(
-      third_row,
-      [&uniform_real_distribution, &default_random_engine](Complex& value)
-      {
-        value = Complex{uniform_real_distribution(default_random_engine),
-                        uniform_real_distribution(default_random_engine)};
-      });
-
-  // Get augmentation
-  auto& augmentation = matrix.GetAugmentation();
-
-  // Set augmentation
-  std::fill(augmentation.begin(), std::prev(augmentation.end()), Complex{0});
-  augmentation.back() = Complex{1};
+  // TODO(blokhtin)
 
   // Get solution
   const auto solution = matrix.GetSolution();
@@ -202,46 +188,6 @@ void ByTwoPoints::RecalculateEquation()
   const auto& value = *solution;
 
   // Create equation
-  SetEquation(LineEquation({value[0], value[1], value[2]}));
-}
-
-GeometricObject* ConstructionConic::GetObject() const
-{
-  // Return conic
-  return GetConic();
-}
-
-Conic* ConstructionConic::GetConic() const
-{
-  // Return conic
-  return conic_.get();
-}
-
-void ConstructionConic::Update(const ObjectEvent::GoingToBeDestroyed& event)
-{
-  // Check if event object is line that we are containing
-  if (event.object == GetObject())
-  {
-    conic_.reset();
-    return;
-  }
-
-  // Destroy the conic
-  conic_->AlertDestruction();
-}
-
-void ConstructionConic::Update(const ObjectEvent::Renamed& event) {}
-
-ConicOnPlane::ConicOnPlane(ConicEquation equation)
-    : equation_(std::move(equation))
-{
-  ConicOnPlane::RecalculateEquation();
-}
-
-void ConicOnPlane::RecalculateEquation() { SetEquation(equation_); }
-
-void ConstructionConic::SetEquation(ConicEquation equation) const
-{
-  conic_->SetEquation(std::move(equation));
+  SetEquation(LineEquation()); // TODO(blokhtin)
 }
 }  // namespace HomoGebra
