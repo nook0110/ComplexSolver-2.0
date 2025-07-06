@@ -1,0 +1,10 @@
+# Geometry components configuration
+file(GLOB GEOMETRY_SOURCES *.cpp)
+file(GLOB GEOMETRY_HEADERS *.h)
+
+# Export variables to parent scope
+set(GEOMETRY_SOURCES ${GEOMETRY_SOURCES} PARENT_SCOPE)
+set(GEOMETRY_INCLUDE_DIRS 
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE)
+set(GEOMETRY_LIBRARIES "" PARENT_SCOPE)

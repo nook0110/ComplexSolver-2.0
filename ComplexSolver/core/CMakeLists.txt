@@ -1,0 +1,15 @@
+# Core components configuration
+file(GLOB CORE_SOURCES *.cpp)
+file(GLOB CORE_HEADERS *.h)
+
+# Export variables to parent scope
+set(CORE_SOURCES ${CORE_SOURCES} PARENT_SCOPE)
+set(CORE_INCLUDE_DIRS 
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${THOR_INCLUDE_PATH}
+    ${IMGUI_DIR}
+    ${OPENGL_INCLUDE_DIRS}
+    PARENT_SCOPE)
+set(CORE_LIBRARIES
+    ${OPENGL_LIBRARIES}
+    PARENT_SCOPE)
