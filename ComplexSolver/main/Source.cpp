@@ -28,13 +28,13 @@ int main() {
   }
 
   window.setFramerateLimit(60);
-  // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+  ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
   auto plane = std::make_unique<ComplexSolver::Plane>();
 
-  auto first = ComplexSolver::PointOnPlaneFactory{plane.get()}(
+  ComplexSolver::PointOnPlaneFactory{plane.get()}(
       ComplexSolver::PointEquation{{100.f, 100.f}});
-  auto second = ComplexSolver::PointOnPlaneFactory{plane.get()}(
+  ComplexSolver::PointOnPlaneFactory{plane.get()}(
       ComplexSolver::PointEquation{{-100.f, -100.f}});
 
   ComplexSolver::LineByTwoPointButton line_by_two_point_button{plane.get()};
@@ -53,7 +53,7 @@ int main() {
 
       if (auto const& io = ImGui::GetIO();
           io.WantCaptureMouse || io.WantCaptureKeyboard) {
-        break;
+        continue;
       }
 
       converter.Update(event);
