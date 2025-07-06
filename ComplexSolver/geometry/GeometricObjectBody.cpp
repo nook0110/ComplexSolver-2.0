@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "Assert.h"
+#include "misc/Font.h"
 #include "utils/Matrix.h"
 
 namespace ComplexSolver {
@@ -27,7 +28,7 @@ extern float CalculateSizeOfPixel(const sf::RenderTarget& target) {
 namespace ComplexSolver {
 ObjectName::ObjectName(std::string name) {
   // Load font
-  font_.loadFromFile(kFontPath);
+  font_.loadFromMemory(kFontData.data(), kFontData.size());
 
   // Set font
   text_.setFont(font_);
