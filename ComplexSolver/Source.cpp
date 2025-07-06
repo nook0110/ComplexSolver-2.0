@@ -32,10 +32,10 @@ int main() {
 
   auto plane = std::make_unique<ComplexSolver::Plane>();
 
-  auto first =
-      ComplexSolver::PointOnPlaneFactory{plane.get()}(ComplexSolver::PointEquation{});
-  auto second =
-      ComplexSolver::PointOnPlaneFactory{plane.get()}(ComplexSolver::PointEquation{});
+  auto first = ComplexSolver::PointOnPlaneFactory{plane.get()}(
+      ComplexSolver::PointEquation{});
+  auto second = ComplexSolver::PointOnPlaneFactory{plane.get()}(
+      ComplexSolver::PointEquation{});
 
   ComplexSolver::LineByTwoPointButton line_by_two_point_button{plane.get()};
   ComplexSolver::DeleteButton delete_button{plane.get()};
@@ -70,7 +70,8 @@ int main() {
         window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
     ImGui::Begin("Distance");
-    for (auto const& object : plane->GetObjects<ComplexSolver::GeometricObject>()) {
+    for (auto const& object :
+         plane->GetObjects<ComplexSolver::GeometricObject>()) {
       ImGui::Text("%s: %f", object->GetName().c_str(),
                   object->GetDistance(mouse_position));
     }

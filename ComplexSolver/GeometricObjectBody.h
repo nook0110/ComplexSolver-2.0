@@ -3,8 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "DistanceUtilities.h"
-#include "GeometricObjectImplementation.h"
-#include "NameGenerator.h"
+#include "Equation.h"
 #include "Var.h"
 
 namespace ComplexSolver {

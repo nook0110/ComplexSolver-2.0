@@ -22,8 +22,7 @@ namespace ComplexSolver {
  * \see ConicImplementation
  *
  */
-class GeometricObjectImplementation
-    : public ObservableGeometricObject {
+class GeometricObjectImplementation : public ObservableGeometricObject {
  public:
   /**
    * \brief Destructor.

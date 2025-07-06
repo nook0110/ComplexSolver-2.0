@@ -7,7 +7,6 @@
 
 #include "Assert.h"
 #include "Matrix.h"
-#include "ThickLineDrawer.h"
 
 namespace ComplexSolver {
 extern float CalculateSizeOfPixel(const sf::RenderTarget& target) {
@@ -140,11 +139,10 @@ void PointBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
   struct Line {
     Line(sf::Vector2f first_point, sf::Vector2f second_point) {
-      const FloatSquaredMatrix matrix(
-          {{first_point.x, first_point.y, 1},
-           {second_point.x, second_point.y, 1},
-           {1, 1, 1}},
-          {0, 0, 1});
+      const FloatSquaredMatrix matrix({{first_point.x, first_point.y, 1},
+                                       {second_point.x, second_point.y, 1},
+                                       {1, 1, 1}},
+                                      {0, 0, 1});
       auto solution = matrix.GetSolution();
     }
   };
@@ -248,7 +246,7 @@ void LineBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   constexpr size_t first = 0;
   constexpr size_t second = 1;
 
-  if (abs(a / b) > size.y / size.x) {
+  if (std::abs(a / b) > size.y / size.x) {
     line_vertices[first].position.y = down;
     line_vertices[second].position.y = up;
     line_vertices[first].position.x =

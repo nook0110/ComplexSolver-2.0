@@ -1,6 +1,5 @@
 #include "GeometricObject.h"
 
-#include <numbers>
 #include <utility>
 
 #include "Equation.h"
