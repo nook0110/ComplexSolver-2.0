@@ -29,6 +29,11 @@ class ObjectSelectorBody : public PlaneObserver {
 
   ~ObjectSelectorBody() override;
 
+  ObjectSelectorBody(const ObjectSelectorBody&) = delete;
+  ObjectSelectorBody(ObjectSelectorBody&&) = delete;
+  ObjectSelectorBody& operator=(const ObjectSelectorBody&) = delete;
+  ObjectSelectorBody& operator=(ObjectSelectorBody&&) = delete;
+
   /**
    * \brief Draws the body of the ObjectSelector.
    *

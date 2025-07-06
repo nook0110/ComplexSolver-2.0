@@ -17,14 +17,6 @@ template <class GeometricObjectType>
 class ObjectSelector : public ObjectSelectorBody<GeometricObjectType> {
  public:
   /**
-   * @brief Updates the object selector when an object is removed from the
-   * plane.
-   *
-   * @param object_removed The event data for the object removed event.
-   */
-  void Update(const PlaneEvent::ObjectRemoved& object_removed) override;
-
-  /**
    * @brief Constructs an ObjectSelector object.
    *
    * @param plane A pointer to the plane on which the object selector operates.

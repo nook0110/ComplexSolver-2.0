@@ -56,6 +56,9 @@ void ObjectSelectorBody<GeometricObjectType>::Update(
   if (GetObject() == object_removed.removed_object) {
     SetObject(nullptr);
   }
+  if (object_getter_.GetLastObject() == object_removed.removed_object) {
+    object_getter_.SetObject(nullptr);
+  }
 }
 
 template <class GeometricObjectType>
