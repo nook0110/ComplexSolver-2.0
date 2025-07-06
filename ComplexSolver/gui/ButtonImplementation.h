@@ -7,9 +7,13 @@ class Plane;
 template <class T>
 concept ButtonElement = requires(T button_part) {
   {T{static_cast<Plane*>(nullptr)}};
-  {button_part.Draw()};
 }
 &&requires(const T button_part) { {button_part()}; };
+
+template <class T>
+concept HasDraw = requires(T t) {
+  t.Draw();
+};
 
 /**
  * \brief Wrapper of element
@@ -20,6 +24,12 @@ concept ButtonElement = requires(T button_part) {
 template <class Element, std::size_t index = 0>
 struct Wrapper : Element {
   explicit Wrapper(Plane* plane) : Element(plane) {}
+
+  void Draw() {
+    if constexpr (HasDraw<Element>) {
+      Element::Draw();
+    }
+  }
 };
 
 /**

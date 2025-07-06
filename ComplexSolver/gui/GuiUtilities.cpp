@@ -1,4 +1,5 @@
 #include "GuiUtilities.h"
+
 #include "geometry/GeometricObject.h"
 
 namespace ComplexSolver {

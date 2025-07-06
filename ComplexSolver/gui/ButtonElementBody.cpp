@@ -2,7 +2,6 @@
 
 #include <imgui.h>
 
-#include <iostream>
 #include <vector>
 
 #include "GuiUtilities.h"

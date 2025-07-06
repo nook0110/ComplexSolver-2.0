@@ -2,10 +2,13 @@
 
 #include <SFML/Graphics.hpp>
 #include <Thor/Shapes.hpp>
+#include <array>
 #include <numbers>
 #include <utility>
 
 #include "Assert.h"
+#include "SFML/Graphics/PrimitiveType.hpp"
+#include "SFML/Graphics/Vertex.hpp"
 #include "misc/Font.h"
 #include "utils/Matrix.h"
 
@@ -95,12 +98,8 @@ void PointBody::Update(const sf::RenderTarget& target,
                        const PointEquation& equation) {
   // Calculate position
   position_ = CalculatePosition(equation);
-
-  // Point is in real projective plane
-  if (position_) {
-    body_.setPosition(position_.value().position);
-    SetNamePosition(position_.value().position);
-  }
+  body_.setPosition(position_.position);
+  SetNamePosition(position_.position);
 
   // Calculate size of body
   const auto size = CalculateSizeOfBody(target);
@@ -115,83 +114,21 @@ void PointBody::Update(const sf::RenderTarget& target,
 }
 
 void PointBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-  // Point is not on a real plane
-  if (!position_) return;
-
-  if (const auto& [position, is_at_infinity] = position_.value();
-      is_at_infinity) {
-    // Draw point at infinity
-    // DrawArrow(target, states);
-  } else {
-    // Draw point
-    target.draw(body_, states);
-    ObjectBody::draw(target, states);
-  }
-}
-
-[[nodiscard]] inline std::optional<sf::Vector2f> IntersectRayWithRectangle(
-    const sf::Vector2f& point, const sf::Vector2f& direction,
-    const sf::FloatRect& rectangle) {
-  if (!rectangle.contains(point)) {
-    return std::nullopt;
-  }
-
-  // TODO: Intersect line with rect.
-
-  struct Line {
-    Line(sf::Vector2f first_point, sf::Vector2f second_point) {
-      const FloatSquaredMatrix matrix({{first_point.x, first_point.y, 1},
-                                       {second_point.x, second_point.y, 1},
-                                       {1, 1, 1}},
-                                      {0, 0, 1});
-      auto solution = matrix.GetSolution();
-    }
-  };
-}
-
-void PointBody::DrawArrow(sf::RenderTarget& target,
-                          sf::RenderStates states) const {
-  Assert(position_, "Point has no 'real' position");
-
-  const auto& [position, is_at_infinity] =
-      position_.value();  // NOLINT(bugprone-unchecked-optional-access)
-
-  Expect(is_at_infinity, "Drawing arrow, but point isn't at infinity?!");
-
-  const auto& view = target.getView();
-  const auto intersection = std::optional<sf::Vector2f>{};
-
-  Assert(intersection.has_value(),
-         "Couldn't find an intersection with a screen!");
-
-  // Coefficient for start of line.
-  constexpr auto kStartShift = 0.9f;
-  const auto arrow_start = intersection.value() * kStartShift +
-                           view.getCenter() * (1.f - kStartShift);
-  constexpr auto kEndShift = 0.95f;
-  const auto arrow_end =
-      intersection.value() * kEndShift + view.getCenter() * (1.f - kEndShift);
-
-  thor::Arrow arrow{arrow_start, arrow_end, sf::Color::Black, 10};
-
-  target.draw(arrow, states);
+  // Draw point
+  target.draw(body_, states);
+  ObjectBody::draw(target, states);
 }
 
 Distance PointBody::GetDistance(const sf::Vector2f& position) const {
-  if (!position_) return std::numeric_limits<Distance>::max();
-
-  if (position_.value().is_at_infinity)
-    return std::numeric_limits<Distance>::max();
-
-  return Length(position_.value().position - position);
+  return Length(position_.position - position);
 }
 
-std::optional<PointBody::ProjectivePosition> PointBody::CalculatePosition(
+PointBody::Position PointBody::CalculatePosition(
     const PointEquation& equation) {
   // Get equation
   const auto& eq = equation.GetEquation();
 
-  return ProjectivePosition{sf::Vector2f(eq.x, eq.y), false};
+  return Position{{eq.x, eq.y}};
 }
 
 float PointBody::CalculateSizeOfBody(const sf::RenderTarget& target) {
@@ -216,6 +153,36 @@ void LineBody::Update(const LineEquation& line_equation) {
   Equation body_equation{equation.A, equation.B, equation.C};
 
   equation_ = body_equation;
+}
+
+static void DrawThickLine(sf::RenderTarget& target,
+                          const std::array<sf::Vertex, 2>& vertices,
+                          float thickness) {
+  std::array<sf::Vertex, 4> vertices_with_thickness;
+
+  const auto& first = vertices[0];
+  const auto& second = vertices[1];
+
+  const auto direction = second.position - first.position;
+  const auto normal = sf::Vector2f(-direction.y, direction.x);
+  const auto normalized_normal = normal / std::hypot(normal.x, normal.y);
+
+  const auto half_thickness = thickness / 2.f;
+  const auto first_vertex = first.position + normalized_normal * half_thickness;
+  const auto second_vertex =
+      second.position + normalized_normal * half_thickness;
+  const auto third_vertex =
+      second.position - normalized_normal * half_thickness;
+  const auto fourth_vertex =
+      first.position - normalized_normal * half_thickness;
+
+  vertices_with_thickness[0] = sf::Vertex(first_vertex, first.color);
+  vertices_with_thickness[1] = sf::Vertex(second_vertex, first.color);
+  vertices_with_thickness[2] = sf::Vertex(third_vertex, second.color);
+  vertices_with_thickness[3] = sf::Vertex(fourth_vertex, second.color);
+
+  target.draw(vertices_with_thickness.data(), vertices_with_thickness.size(),
+              sf::Quads);  // Draw the thick line
 }
 
 void LineBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -260,7 +227,7 @@ void LineBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         -(line_vertices[second].position.x * a + c) / b;
   }
 
-  target.draw(line_vertices.data(), 2, sf::Lines);
+  DrawThickLine(target, line_vertices, CalculateSizeOfBody(target));
 }
 
 Distance LineBody::GetDistance(const sf::Vector2f& position) const {
@@ -281,5 +248,10 @@ float LineBody::Equation::Solve(const Var var, const float another) const {
       Assert(false, "Invalid variable");
   }
   return float{};
+}
+
+float LineBody::CalculateSizeOfBody(const sf::RenderTarget& target) {
+  constexpr auto kLineFactor = 2.f;
+  return CalculateSizeOfPixel(target) * kLineFactor;
 }
 }  // namespace ComplexSolver

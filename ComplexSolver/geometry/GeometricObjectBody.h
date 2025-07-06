@@ -168,14 +168,6 @@ class PointBody final : public ObjectBody {
    */
   void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-  /**
-   * \brief Draw arrow to a render target.
-   *
-   * \param target Render target to draw to.
-   * \param states Current render states.
-   */
-  void DrawArrow(sf::RenderTarget& target, sf::RenderStates states) const;
-
   Distance GetDistance(const sf::Vector2f& position) const override;
 
  private:
@@ -192,10 +184,8 @@ class PointBody final : public ObjectBody {
    *
    * \date February 2023
    */
-  struct ProjectivePosition {
+  struct Position {
     sf::Vector2f position;  //!< Position of the point.
-
-    bool is_at_infinity = false;  //!< Is the point at infinity?
   };
 
   /**
@@ -205,8 +195,7 @@ class PointBody final : public ObjectBody {
    *
    * \return Projective position of the point.
    */
-  static std::optional<ProjectivePosition> CalculatePosition(
-      const PointEquation& equation);
+  static Position CalculatePosition(const PointEquation& equation);
 
   /**
    * \brief Calculates size of a body
@@ -219,8 +208,7 @@ class PointBody final : public ObjectBody {
    */
   static float CalculateSizeOfBody(const sf::RenderTarget& target);
 
-  std::optional<ProjectivePosition>
-      position_;          //!< Projective position of the point.
+  Position position_;     //!< Projective position of the point.
   sf::CircleShape body_;  //!< Body of the point.
 };
 
@@ -293,6 +281,17 @@ class LineBody final : public ObjectBody {
      */
     [[nodiscard]] float Solve(Var var, float another) const;
   };
+
+  /**
+   * \brief Calculates size of a body
+   *
+   * \details Calculates size of pixel and than multiply size on a const
+   *
+   * \param target Render target to draw to.
+   *
+   * \return Size of body.
+   */
+  static float CalculateSizeOfBody(const sf::RenderTarget& target);
 
   std::optional<Equation> equation_;  //!< Equation of the line.
 };

@@ -51,11 +51,6 @@ class FactoryWrapper : public Factory {
   explicit FactoryWrapper(Plane* plane) : Factory(plane) {}
 
   /**
-   * @brief Draws the factory.
-   */
-  void Draw() {}
-
-  /**
    * @brief Calls the wrapped factory with the specified arguments.
    *
    * @tparam Args The types of the arguments.
@@ -89,11 +84,6 @@ class Deleter {
    * @param plane A pointer to the plane on which the deleter operates.
    */
   explicit Deleter(Plane* plane) : plane_(plane) {}
-
-  /**
-   * @brief Draws the deleter.
-   */
-  void Draw() {}
 
   /**
    * @brief Calls the deleter with the specified arguments.

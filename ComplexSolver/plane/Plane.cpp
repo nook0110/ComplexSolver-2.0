@@ -36,7 +36,11 @@ void Plane::UpdateBodies(const sf::RenderTarget& target) const {
 void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   //  Draw all objects
   std::ranges::for_each(
-      GetObjects<GeometricObject>(),
+      GetObjects<Line>(),
+      [&target, &states](const auto object) { target.draw(*object, states); });
+
+  std::ranges::for_each(
+      GetObjects<Point>(),
       [&target, &states](const auto object) { target.draw(*object, states); });
 }
 
