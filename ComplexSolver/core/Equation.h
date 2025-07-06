@@ -1,5 +1,8 @@
 #pragma once
 
+#include <utility>
+
+#include "Assert.h"
 #include "Var.h"
 
 namespace ComplexSolver {
@@ -29,6 +32,8 @@ class PointEquation {
         case Var::kY:
           return y;
       }
+      Assert(false, "Invalid variable");
+      std::unreachable();
     }
     const float& operator[](Var var) const {
       switch (var) {
@@ -37,6 +42,8 @@ class PointEquation {
         case Var::kY:
           return y;
       }
+      Assert(false, "Invalid variable");
+      std::unreachable();
     }
   };
 

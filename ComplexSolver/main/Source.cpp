@@ -1,5 +1,6 @@
 #include <SFML/OpenGL.hpp>
 #include <cstdlib>
+#include <memory>
 
 #include "ButtonsImplementations.h"
 #include "EventConverter.h"
@@ -8,8 +9,6 @@
 #include "geometry/GeometricObjectFactory.h"
 #include "imgui-SFML.h"
 #include "imgui.h"
-
-namespace ComplexSolver::Editor {}  // namespace ComplexSolver::Editor
 
 int main() {
   sf::ContextSettings settings;
