@@ -2,24 +2,20 @@
 
 #include <algorithm>
 
-namespace HomoGebra
-{
-void EventNotifier::Attach(EventListener* listener)
-{
+namespace HomoGebra {
+void EventNotifier::Attach(EventListener* listener) {
   // Add listener to list
   listeners_.push_back(listener);
 }
 
-void EventNotifier::Detach(const EventListener* listener)
-{
+void EventNotifier::Detach(const EventListener* listener) {
   // Remove listener from list
-  listeners_.remove_if([listener](const EventListener* obs)
-                       { return obs == listener; });
+  listeners_.remove_if(
+      [listener](const EventListener* obs) { return obs == listener; });
 }
 
 template <class Event>
-void EventNotifier::Notify(const Event& event) const
-{
+void EventNotifier::Notify(const Event& event) const {
   // Update all listeners
   std::ranges::for_each(
       listeners_, [&event](const auto& listener) { listener->Update(event); });

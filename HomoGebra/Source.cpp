@@ -1,11 +1,11 @@
 #include <SFML/OpenGL.hpp>
+#include <cstdlib>
 
 #include "ButtonsImplementations.h"
 #include "EventConverter.h"
 #include "GeometricObject.h"
 #include "GeometricObjectFactory.h"
 #include "Gui.h"
-#include "SFML/Graphics.hpp"
 #include "imgui-SFML.h"
 #include "imgui.h"
 
@@ -23,7 +23,9 @@ int main() {
 
   window.setView(sf::View({0, 0}, {1000, 1000}));
 
-  ImGui::SFML::Init(window);
+  if (!ImGui::SFML::Init(window)) {
+    return EXIT_FAILURE;
+  }
 
   window.setFramerateLimit(60);
   // ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;

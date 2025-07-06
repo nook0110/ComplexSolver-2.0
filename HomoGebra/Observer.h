@@ -2,8 +2,7 @@
 #include <list>
 #include <string>
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 class Plane;
 class GeometricObject;
 
@@ -13,8 +12,7 @@ class GeometricObject;
  * \author nook0110
  */
 template <class Observer>
-class ObservableInterface
-{
+class ObservableInterface {
  public:
   /**
    * \brief Default destructor.
@@ -37,8 +35,7 @@ class ObservableInterface
 };
 
 template <class Observer>
-class Observable : public ObservableInterface<Observer>
-{
+class Observable : public ObservableInterface<Observer> {
  public:
   /**
    * \brief Default destructor.
@@ -78,21 +75,18 @@ class Observable : public ObservableInterface<Observer>
 /**
  * \brief Events which can happen with objects.
  */
-namespace ObjectEvent
-{
+namespace ObjectEvent {
 /**
  * \brief Tag that shows that object was moved.
  */
-struct Moved
-{
+struct Moved {
   GeometricObject* object;  //!< Object which was moved.
 };
 
 /**
  * \brief Tag that shows that object was destroyed.
  */
-struct GoingToBeDestroyed
-{
+struct GoingToBeDestroyed {
   /*
    * Member data.
    */
@@ -102,8 +96,7 @@ struct GoingToBeDestroyed
 /**
  * \brief Tag that shows that objects was renamed.
  */
-struct Renamed
-{
+struct Renamed {
   /*
    *    Member data.
    */
@@ -127,8 +120,7 @@ struct Renamed
  * \see ObservableGeometricObject
  * \see Construction
  */
-class GeometricObjectObserver
-{
+class GeometricObjectObserver {
  public:
   /**
    * \brief Default constructor.
@@ -184,8 +176,7 @@ class GeometricObjectObserver
  * \see ConstructionObserver
  * \see GeometricObjectImplementation
  */
-class ObservableGeometricObject : public Observable<GeometricObjectObserver>
-{
+class ObservableGeometricObject : public Observable<GeometricObjectObserver> {
  public:
   /**
    * \brief Default destructor.
@@ -202,21 +193,18 @@ class ObservableGeometricObject : public Observable<GeometricObjectObserver>
   void Notify(const Event& event) const;
 };
 
-namespace PlaneEvent
-{
+namespace PlaneEvent {
 /**
  * \brief Tag that shows that object was removed.
  *
  * \author nook0110
  */
-struct ObjectRemoved
-{
+struct ObjectRemoved {
   const GeometricObject* removed_object{};
 };
 }  // namespace PlaneEvent
 
-class PlaneObserver
-{
+class PlaneObserver {
  public:
   /**
    * \brief Default constructor.
@@ -239,8 +227,7 @@ class PlaneObserver
   virtual void Update(const PlaneEvent::ObjectRemoved& object_removed) = 0;
 };
 
-class ObservablePlane : public Observable<PlaneObserver>
-{
+class ObservablePlane : public Observable<PlaneObserver> {
  public:
   /**
    * \brief Default destructor.

@@ -2,46 +2,39 @@
 
 #include "GeometricObject.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 template <class GeometricObjectType>
 NearbyObjectGetter<GeometricObjectType>::NearbyObjectGetter(
     Plane* plane, GeometricObjectType* last_object)
-    : last_object_(std::move(last_object)), finder_(plane)
-{
+    : last_object_(std::move(last_object)), finder_(plane) {
   plane->Attach(this);
 }
 
 template <class GeometricObjectType>
-GeometricObjectType* NearbyObjectGetter<GeometricObjectType>::GetLastObject()
-{
+GeometricObjectType* NearbyObjectGetter<GeometricObjectType>::GetLastObject() {
   return last_object_;
 }
 
 template <class GeometricObjectType>
-void NearbyObjectGetter<GeometricObjectType>::Reset()
-{
+void NearbyObjectGetter<GeometricObjectType>::Reset() {
   SetObject(nullptr);
 }
 
 template <class GeometricObjectType>
 void NearbyObjectGetter<GeometricObjectType>::SetObject(
-    GeometricObjectType* object)
-{
+    GeometricObjectType* object) {
   last_object_ = object;
 }
 
 template <class GeometricObjectType>
 void NearbyObjectGetter<GeometricObjectType>::Update(
-    const UserEvent::Click& event)
-{
+    const UserEvent::Click& event) {
   FindNearestObject(event.position);
 }
 
 template <class GeometricObjectType>
 void NearbyObjectGetter<GeometricObjectType>::FindNearestObject(
-    const sf::Vector2f& position)
-{
+    const sf::Vector2f& position) {
   // Find nearest object
   SetObject(finder_.GetNearestObject<GeometricObjectType>(position));
 }

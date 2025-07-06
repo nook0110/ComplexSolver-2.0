@@ -1,7 +1,6 @@
 #pragma once
 #include <map>
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * \brief Dictionary that can store SubDictionaries.
  *
@@ -17,8 +16,7 @@ namespace HomoGebra
  * \date April 2023
  */
 template <class Item>
-class Dictionary
-{
+class Dictionary {
  public:
   /**
    * \brief Adds item to dictionary.
@@ -52,17 +50,14 @@ class Dictionary
 };
 
 template <class Item>
-bool Dictionary<Item>::AddItem(const Item& item)
-{
+bool Dictionary<Item>::AddItem(const Item& item) {
   return used_items_[item] = true;
 }
 
 template <class Item>
-bool Dictionary<Item>::DeleteItem(const Item& item)
-{
+bool Dictionary<Item>::DeleteItem(const Item& item) {
   // Check if item is used
-  if (!used_items_.count(item))
-  {
+  if (!used_items_.count(item)) {
     return false;
   }
 
@@ -71,11 +66,9 @@ bool Dictionary<Item>::DeleteItem(const Item& item)
 }
 
 template <class Item>
-bool Dictionary<Item>::IsItemUsed(const Item& item) const
-{
+bool Dictionary<Item>::IsItemUsed(const Item& item) const {
   // Check if item is used
-  if (!used_items_.count(item))
-  {
+  if (!used_items_.count(item)) {
     return false;
   }
 

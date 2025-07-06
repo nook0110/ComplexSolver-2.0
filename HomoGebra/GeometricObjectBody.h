@@ -7,8 +7,7 @@
 #include "NameGenerator.h"
 #include "Var.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * \brief Name of object that you can draw.
  *
@@ -18,8 +17,7 @@ namespace HomoGebra
  *
  * \date April 2023
  */
-class ObjectName final : public sf::Drawable, public sf::Transformable
-{
+class ObjectName final : public sf::Drawable, public sf::Transformable {
  public:
   /**
    * \brief Constructs an object name.
@@ -82,8 +80,7 @@ class ObjectName final : public sf::Drawable, public sf::Transformable
  *
  * \date July 2023
  */
-class ObjectBody : public sf::Drawable
-{
+class ObjectBody : public sf::Drawable {
  public:
   /**
    * \brief Set name of the point.
@@ -144,8 +141,7 @@ class ObjectBody : public sf::Drawable
  *
  * \date February 2023
  */
-class PointBody final : public ObjectBody
-{
+class PointBody final : public ObjectBody {
  public:
   /**
    * \brief Default constructor.
@@ -199,8 +195,7 @@ class PointBody final : public ObjectBody
    *
    * \date February 2023
    */
-  struct ProjectivePosition
-  {
+  struct ProjectivePosition {
     sf::Vector2f position;  //!< Position of the point.
 
     bool is_at_infinity = false;  //!< Is the point at infinity?
@@ -241,8 +236,7 @@ class PointBody final : public ObjectBody
  *
  * \date February 2023
  */
-class LineBody final : public ObjectBody
-{
+class LineBody final : public ObjectBody {
  public:
   /**
    * \brief Default constructor.
@@ -283,8 +277,7 @@ class LineBody final : public ObjectBody
    *
    * \date July 2023
    */
-  struct Equation
-  {
+  struct Equation {
     /*
      * Line equation:
      * a*x + b*y + c = 0

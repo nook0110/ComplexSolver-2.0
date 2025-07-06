@@ -3,10 +3,8 @@
 #include "Matrix.h"
 #include "ObjectConstruction.h"
 
-namespace HomoGebra
-{
-Point* PointOnPlaneFactory::operator()(PointEquation equation) const
-{
+namespace HomoGebra {
+Point* PointOnPlaneFactory::operator()(PointEquation equation) const {
   // Create construction
   auto construction = std::make_unique<PointOnPlane>(std::move(equation));
 
@@ -24,8 +22,7 @@ Point* PointOnPlaneFactory::operator()(PointEquation equation) const
   return point;
 }
 
-Line* LineOnPlaneFactory::operator()(LineEquation equation) const
-{
+Line* LineOnPlaneFactory::operator()(LineEquation equation) const {
   // Create construction
   auto construction = std::make_unique<LineOnPlane>(std::move(equation));
 
@@ -43,8 +40,7 @@ Line* LineOnPlaneFactory::operator()(LineEquation equation) const
   return line;
 }
 
-Line* LineByTwoPointsFactory::operator()(Point* first, Point* second) const
-{
+Line* LineByTwoPointsFactory::operator()(Point* first, Point* second) const {
   // Create construction
   auto construction = std::make_unique<class ByTwoPoints>(first, second);
 

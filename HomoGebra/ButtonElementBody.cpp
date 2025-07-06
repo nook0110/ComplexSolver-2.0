@@ -6,11 +6,9 @@
 
 #include "GuiUtilities.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 template <class GeometricObjectType>
-void ObjectSelectorBody<GeometricObjectType>::Draw()
-{
+void ObjectSelectorBody<GeometricObjectType>::Draw() {
   ImGui::PushID(this);
 
   // Draw which object is selected
@@ -27,45 +25,39 @@ void ObjectSelectorBody<GeometricObjectType>::Draw()
 
 template <class GeometricObjectType>
 void ObjectSelectorBody<GeometricObjectType>::SetObject(
-    GeometricObjectType* object)
-{
+    GeometricObjectType* object) {
   object_ = object;
   current_object_ = -1;
 }
 
 template <class GeometricObjectType>
-GeometricObjectType* ObjectSelectorBody<GeometricObjectType>::GetObject() const
-{
+GeometricObjectType* ObjectSelectorBody<GeometricObjectType>::GetObject()
+    const {
   return object_;
 }
 
 template <class GeometricObjectType>
 void ObjectSelectorBody<GeometricObjectType>::Update(
-    const PlaneEvent::ObjectRemoved& object_removed)
-{
-  if (GetObject() == object_removed.removed_object)
-  {
+    const PlaneEvent::ObjectRemoved& object_removed) {
+  if (GetObject() == object_removed.removed_object) {
     SetObject(nullptr);
   }
 }
 
 template <class GeometricObjectType>
-void ObjectSelectorBody<GeometricObjectType>::DrawName()
-{
-  if (!GetObject())
-  {
+void ObjectSelectorBody<GeometricObjectType>::DrawName() {
+  if (!GetObject()) {
     // If there is no object selected, draw nullptr
     ImGui::Text("nullptr");
     return;
   }
 
   // Draw name of object
-  ImGui::Text(GetObject()->GetName().c_str());
+  ImGui::Text("%s", GetObject()->GetName().c_str());
 }
 
 template <class GeometricObjectType>
-void ObjectSelectorBody<GeometricObjectType>::DrawList()
-{
+void ObjectSelectorBody<GeometricObjectType>::DrawList() {
   // Get objects of type
   std::vector<GeometricObject*> objects =
       plane_->GetObjects<GeometricObjectType>();
@@ -74,37 +66,31 @@ void ObjectSelectorBody<GeometricObjectType>::DrawList()
   if (ImGui::ListBox("Objects", &current_object_, ObjectsNameGetter, &objects,
                      static_cast<int>(objects.size())) &&
       (current_object_ >= 0 &&
-       current_object_ < static_cast<int>(objects.size())))
-  {
+       current_object_ < static_cast<int>(objects.size()))) {
     // Select object
     SetObject(dynamic_cast<GeometricObjectType*>(objects[current_object_]));
   }
 }
 
 template <class GeometricObjectType>
-void ObjectSelectorBody<GeometricObjectType>::DrawSetter()
-{
+void ObjectSelectorBody<GeometricObjectType>::DrawSetter() {
   std::string last_used_object_text = "Last used object: ";
 
   // Get last used object
   const auto object = object_getter_.GetLastObject();
 
   // Add name of object to text if it is not nullptr, otherwise add nullptr
-  if (object)
-  {
+  if (object) {
     last_used_object_text += object->GetName();
-  }
-  else
-  {
+  } else {
     last_used_object_text += "nullptr";
   }
 
   // Draw last used object
-  ImGui::Text(last_used_object_text.c_str());
+  ImGui::Text("%s", last_used_object_text.c_str());
 
   // Create button to select object
-  if (ImGui::Button("Select object"))
-  {
+  if (ImGui::Button("Select object")) {
     SetObject(object);
   }
 }

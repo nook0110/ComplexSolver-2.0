@@ -3,14 +3,12 @@
 #include "GeometricObject.h"
 #include "Plane.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * \class PointOnPlaneFactory
  * \brief Factory class for constructing points on a plane.
  */
-class PointOnPlaneFactory
-{
+class PointOnPlaneFactory {
  public:
   /**
    * \brief Constructs a PointOnPlaneFactory object with the given plane.
@@ -36,15 +34,13 @@ class PointOnPlaneFactory
  * \struct PointProjectionFactory
  * \brief Factory struct for constructing points projected on a plane.
  */
-struct PointProjectionFactory
-{
+struct PointProjectionFactory {
   /**
    * \brief Constructs a PointProjectionFactory object with the given plane.
    *
    * \param plane The plane on which the points will be projected.
    */
-  explicit PointProjectionFactory(Plane* plane) : plane_(plane)
-  {
+  explicit PointProjectionFactory(Plane* plane) : plane_(plane) {
     Assert(plane);
   }
 
@@ -66,8 +62,7 @@ struct PointProjectionFactory
  * \struct LineOnPlaneFactory
  * \brief Factory struct for constructing lines on a plane.
  */
-struct LineOnPlaneFactory
-{
+struct LineOnPlaneFactory {
   /**
    * \brief Constructs a LineOnPlaneFactory object with the given plane.
    *
@@ -92,15 +87,13 @@ struct LineOnPlaneFactory
  * \struct LineByTwoPointsFactory
  * \brief Factory struct for constructing lines through two points on a plane.
  */
-struct LineByTwoPointsFactory
-{
+struct LineByTwoPointsFactory {
   /**
    * \brief Constructs a LineByTwoPointsFactory object with the given plane.
    *
    * \param plane The plane on which the lines will be constructed.
    */
-  explicit LineByTwoPointsFactory(Plane* plane) : plane_(plane)
-  {
+  explicit LineByTwoPointsFactory(Plane* plane) : plane_(plane) {
     Assert(plane);
   }
 

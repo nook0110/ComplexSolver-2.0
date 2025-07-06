@@ -9,10 +9,8 @@
 #include "Matrix.h"
 #include "ThickLineDrawer.h"
 
-namespace HomoGebra
-{
-extern float CalculateSizeOfPixel(const sf::RenderTarget& target)
-{
+namespace HomoGebra {
+extern float CalculateSizeOfPixel(const sf::RenderTarget& target) {
   // Calculate position of pixel with coordinate (0, 0)
   const auto first_pixel_position = target.mapPixelToCoords({0, 0});
 
@@ -27,10 +25,8 @@ extern float CalculateSizeOfPixel(const sf::RenderTarget& target)
 }
 }  // namespace HomoGebra
 
-namespace HomoGebra
-{
-ObjectName::ObjectName(std::string name)
-{
+namespace HomoGebra {
+ObjectName::ObjectName(std::string name) {
   // Load font
   font_.loadFromFile(kFontPath);
 
@@ -45,8 +41,7 @@ ObjectName::ObjectName(std::string name)
   SetName(std::move(name));
 }
 
-void ObjectName::SetName(std::string name)
-{
+void ObjectName::SetName(std::string name) {
   // Set name
   name_ = std::move(name);
 
@@ -56,47 +51,40 @@ void ObjectName::SetName(std::string name)
 
 const std::string& ObjectName::GetName() const { return name_; }
 
-void ObjectName::SetSize(const float size)
-{
+void ObjectName::SetSize(const float size) {
   const auto height = text_.getLocalBounds().height;
   auto factor = size / height;
   text_.setScale({factor, factor});
 }
 
-void ObjectName::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
+void ObjectName::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   // Apply transform
   states.transform *= getTransform();
   // Draw
   target.draw(text_, states);
 }
 
-void ObjectBody::SetName(std::string name)
-{
+void ObjectBody::SetName(std::string name) {
   // Set name
   text_.SetName(std::move(name));
 }
 
-const std::string& ObjectBody::GetName() const
-{
+const std::string& ObjectBody::GetName() const {
   // Return name
   return text_.GetName();
 }
 
-void ObjectBody::SetNamePosition(const sf::Vector2f& position)
-{
+void ObjectBody::SetNamePosition(const sf::Vector2f& position) {
   // Set position
   text_.setPosition(position);
 }
 
-void ObjectBody::SetNameSize(const float size)
-{
+void ObjectBody::SetNameSize(const float size) {
   // Set size
   text_.SetSize(size);
 }
 
-void ObjectBody::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
+void ObjectBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   // Draw name
   target.draw(text_, states);
 }
@@ -104,14 +92,12 @@ void ObjectBody::draw(sf::RenderTarget& target, sf::RenderStates states) const
 PointBody::PointBody() { body_.setFillColor(sf::Color::Red); }
 
 void PointBody::Update(const sf::RenderTarget& target,
-                       const PointEquation& equation)
-{
+                       const PointEquation& equation) {
   // Calculate position
   position_ = CalculatePosition(equation);
 
   // Point is in real projective plane
-  if (position_)
-  {
+  if (position_) {
     body_.setPosition(position_.value().position);
     SetNamePosition(position_.value().position);
   }
@@ -128,19 +114,15 @@ void PointBody::Update(const sf::RenderTarget& target,
   body_.setOrigin(size, size);
 }
 
-void PointBody::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
+void PointBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   // Point is not on a real plane
   if (!position_) return;
 
   if (const auto& [position, is_at_infinity] = position_.value();
-      is_at_infinity)
-  {
+      is_at_infinity) {
     // Draw point at infinity
     // DrawArrow(target, states);
-  }
-  else
-  {
+  } else {
     // Draw point
     target.draw(body_, states);
     ObjectBody::draw(target, states);
@@ -149,19 +131,15 @@ void PointBody::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 [[nodiscard]] inline std::optional<sf::Vector2f> IntersectRayWithRectangle(
     const sf::Vector2f& point, const sf::Vector2f& direction,
-    const sf::FloatRect& rectangle)
-{
-  if (!rectangle.contains(point))
-  {
+    const sf::FloatRect& rectangle) {
+  if (!rectangle.contains(point)) {
     return std::nullopt;
   }
 
   // TODO: Intersect line with rect.
 
-  struct Line
-  {
-    Line(sf::Vector2f first_point, sf::Vector2f second_point)
-    {
+  struct Line {
+    Line(sf::Vector2f first_point, sf::Vector2f second_point) {
       const HomoGebra::FloatSquaredMatrix matrix(
           {{first_point.x, first_point.y, 1},
            {second_point.x, second_point.y, 1},
@@ -173,8 +151,7 @@ void PointBody::draw(sf::RenderTarget& target, sf::RenderStates states) const
 }
 
 void PointBody::DrawArrow(sf::RenderTarget& target,
-                          sf::RenderStates states) const
-{
+                          sf::RenderStates states) const {
   Assert(position_, "Point has no 'real' position");
 
   const auto& [position, is_at_infinity] =
@@ -201,8 +178,7 @@ void PointBody::DrawArrow(sf::RenderTarget& target,
   target.draw(arrow, states);
 }
 
-Distance PointBody::GetDistance(const sf::Vector2f& position) const
-{
+Distance PointBody::GetDistance(const sf::Vector2f& position) const {
   if (!position_) return std::numeric_limits<Distance>::max();
 
   if (position_.value().is_at_infinity)
@@ -212,19 +188,15 @@ Distance PointBody::GetDistance(const sf::Vector2f& position) const
 }
 
 std::optional<PointBody::ProjectivePosition> PointBody::CalculatePosition(
-    const PointEquation& equation)
-{
+    const PointEquation& equation) {
   // Get equation
   const auto& eq = equation.GetEquation();
 
   return ProjectivePosition{
-      sf::Vector2f(static_cast<float>(eq.x),
-                   static_cast<float>(eq.y)),
-      false};
+      sf::Vector2f(static_cast<float>(eq.x), static_cast<float>(eq.y)), false};
 }
 
-float PointBody::CalculateSizeOfBody(const sf::RenderTarget& target)
-{
+float PointBody::CalculateSizeOfBody(const sf::RenderTarget& target) {
   // Calculate size of pixel
   const auto pixel_size = CalculateSizeOfPixel(target);
 
@@ -238,25 +210,21 @@ float PointBody::CalculateSizeOfBody(const sf::RenderTarget& target)
   return size;
 }
 
-void LineBody::Update(const LineEquation& line_equation)
-{
+void LineBody::Update(const LineEquation& line_equation) {
   // Normalize equation
   const auto& equation = line_equation.GetEquation();
 
   // Set equation
-  Equation body_equation{
-      static_cast<float>(equation.A),
-      static_cast<float>(equation.B),
-      static_cast<float>(equation.C)};
+  Equation body_equation{static_cast<float>(equation.A),
+                         static_cast<float>(equation.B),
+                         static_cast<float>(equation.C)};
 
   equation_ = body_equation;
 }
 
-void LineBody::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
+void LineBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   // Check ig line is in 'real' plane
-  if (!equation_)
-  {
+  if (!equation_) {
     return;
   }
   const auto& a = equation_.value().a;
@@ -273,23 +241,21 @@ void LineBody::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
   std::array<sf::Vertex, 2> line_vertices;
 
-  std::ranges::for_each(line_vertices, [](sf::Vertex& vertex)
-                        { vertex.color = sf::Color::Black; });
+  std::ranges::for_each(line_vertices, [](sf::Vertex& vertex) {
+    vertex.color = sf::Color::Black;
+  });
 
   constexpr size_t first = 0;
   constexpr size_t second = 1;
 
-  if (abs(a / b) > size.y / size.x)
-  {
+  if (abs(a / b) > size.y / size.x) {
     line_vertices[first].position.y = down;
     line_vertices[second].position.y = up;
     line_vertices[first].position.x =
         -(line_vertices[first].position.y * b + c) / a;
     line_vertices[second].position.x =
         -(line_vertices[second].position.y * b + c) / a;
-  }
-  else
-  {
+  } else {
     line_vertices[first].position.x = left;
     line_vertices[second].position.x = right;
     line_vertices[first].position.y =
@@ -301,8 +267,7 @@ void LineBody::draw(sf::RenderTarget& target, sf::RenderStates states) const
   target.draw(line_vertices.data(), 2, sf::Lines);
 }
 
-Distance LineBody::GetDistance(const sf::Vector2f& position) const
-{
+Distance LineBody::GetDistance(const sf::Vector2f& position) const {
   if (!equation_) return std::numeric_limits<Distance>::max();
 
   const auto& [a, b, c] = equation_.value();
@@ -310,10 +275,8 @@ Distance LineBody::GetDistance(const sf::Vector2f& position) const
   return DistanceToLine(position, a, b, c);
 }
 
-float LineBody::Equation::Solve(const Var var, const float another) const
-{
-  switch (var)
-  {
+float LineBody::Equation::Solve(const Var var, const float another) const {
+  switch (var) {
     case Var::kX:
       return (-c - b * another) / a;
     case Var::kY:

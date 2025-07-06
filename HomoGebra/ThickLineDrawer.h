@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * \brief Thick line drawer.
  *
@@ -12,19 +11,15 @@ namespace HomoGebra
  * \date April 2023
  *
  */
-class ThickLineDrawer
-{
+class ThickLineDrawer {
  public:
   void Draw(sf::RenderTarget& target, const std::vector<sf::Vertex>& vertices,
-            float thickness)
-  {
-    if (vertices.empty())
-    {
+            float thickness) {
+    if (vertices.empty()) {
       return;  // If there are no vertices, no line can be drawn
     }
 
-    if (vertices.size() == 1)
-    {
+    if (vertices.size() == 1) {
       sf::CircleShape circle(thickness / 2.f);
       circle.setFillColor(vertices[0].color);
       circle.setPosition(vertices[0].position);
@@ -35,8 +30,7 @@ class ThickLineDrawer
     std::vector<sf::Vertex> vertices_with_thickness;
     vertices_with_thickness.reserve(vertices.size() * 4);
 
-    for (size_t i = 0; i < vertices.size() - 1; ++i)
-    {
+    for (size_t i = 0; i < vertices.size() - 1; ++i) {
       const auto& first = vertices[i];
       const auto& second = vertices[i + 1];
 
@@ -66,8 +60,7 @@ class ThickLineDrawer
     target.draw(buffer);  // Draw the thick line
 
     // Drawing circle at each point with radius equal to half of thickness
-    for (const auto& vertex : vertices)
-    {
+    for (const auto& vertex : vertices) {
       sf::CircleShape circle(thickness / 2.f);
       circle.setFillColor(vertex.color);
       circle.setPosition(vertex.position);

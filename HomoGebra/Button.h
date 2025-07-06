@@ -2,8 +2,7 @@
 #include <imgui.h>
 
 #include "ButtonImplementation.h"
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * \brief Button.
  *
@@ -12,25 +11,22 @@ namespace HomoGebra
  *
  */
 template <class... Elements>
-class ButtonBase : public ButtonImplementation<Elements...>
-{
+class ButtonBase : public ButtonImplementation<Elements...> {
  public:
   /**
    * \brief Construct button for plane.
    *
    */
-  explicit ButtonBase(Plane* plane) : ButtonImplementation<Elements...>(plane)
-  {}
+  explicit ButtonBase(Plane* plane)
+      : ButtonImplementation<Elements...>(plane) {}
 
   /**
    * \brief Draws button.
    *
    */
-  void Draw()
-  {
+  void Draw() {
     ButtonImplementation<Elements...>::Draw();
-    if (DrawApplyButton())
-    {
+    if (DrawApplyButton()) {
       ButtonImplementation<Elements...>::PassArguments();
     }
   }

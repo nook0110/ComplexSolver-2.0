@@ -2,20 +2,16 @@
 #include <SFML/System/Vector2.hpp>
 #include <list>
 
-namespace HomoGebra
-{
-namespace UserEvent
-{
+namespace HomoGebra {
+namespace UserEvent {
 /**
  * \brief Tag that shows that user clicked on the screen.
  */
-struct Click
-{
+struct Click {
   sf::Vector2f position;  //!< Position of the click.
 };
 
-struct Unclick
-{
+struct Unclick {
   sf::Vector2f position;  //!< Position of the unclick.
 };
 }  // namespace UserEvent
@@ -27,8 +23,7 @@ struct Unclick
  *
  * \author nook0110
  */
-class EventListener
-{
+class EventListener {
  public:
   /**
    * \brief Default destructor.
@@ -51,8 +46,7 @@ class EventListener
  *
  * \author nook0110
  */
-class EventNotifier
-{
+class EventNotifier {
  public:
   /**
    * \brief Attach a listener to the notifier.

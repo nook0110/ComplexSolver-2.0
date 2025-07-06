@@ -4,8 +4,7 @@
 #include "GeometricObjectFactory.h"
 #include "imgui.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * @brief A class representing a window button.
  *
@@ -15,8 +14,7 @@ namespace HomoGebra
  * @tparam ButtonClass The class of the button to inherit from.
  */
 template <class ButtonClass>
-class WindowButton : public ButtonClass
-{
+class WindowButton : public ButtonClass {
  public:
   /**
    * @brief Constructs a new WindowButton object.
@@ -25,14 +23,12 @@ class WindowButton : public ButtonClass
    * @param plane The plane associated with the button.
    */
   explicit WindowButton(std::string name, Plane* plane)
-      : ButtonClass(plane), name_(std::move(name))
-  {}
+      : ButtonClass(plane), name_(std::move(name)) {}
 
   /**
    * @brief Draws the button inside an ImGui window.
    */
-  void Draw()
-  {
+  void Draw() {
     ImGui::Begin(name_.data());
     ButtonClass::Draw();
     ImGui::End();
@@ -52,8 +48,7 @@ class WindowButton : public ButtonClass
 class LineByTwoPointButton final
     : public WindowButton<
           ButtonBase<ObjectSelector<Point>, ObjectSelector<Point>,
-                     FactoryWrapper<LineByTwoPointsFactory>>>
-{
+                     FactoryWrapper<LineByTwoPointsFactory>>> {
  public:
   /**
    * @brief Constructs a new LineByTwoPointButton object.
@@ -61,8 +56,7 @@ class LineByTwoPointButton final
    * @param plane The plane associated with the button.
    */
   explicit LineByTwoPointButton(Plane* plane)
-      : WindowButton("Line by two points", plane)
-  {}
+      : WindowButton("Line by two points", plane) {}
 };
 
 /**
@@ -72,8 +66,8 @@ class LineByTwoPointButton final
  * It provides functionality to delete a selected geometric object.
  */
 class DeleteButton final
-    : public WindowButton<ButtonBase<ObjectSelector<GeometricObject>, Deleter>>
-{
+    : public WindowButton<
+          ButtonBase<ObjectSelector<GeometricObject>, Deleter>> {
  public:
   /**
    * @brief Constructs a new DeleteButton object.

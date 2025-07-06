@@ -3,10 +3,8 @@
 
 #include "Plane.h"
 
-namespace HomoGebra
-{
-class HomoGebraWindow final : public sf::Window
-{
+namespace HomoGebra {
+class HomoGebraWindow final : public sf::Window {
  public:
   HomoGebraWindow(sf::VideoMode mode, const sf::String& title,
                   sf::Uint32 style = sf::Style::Default,

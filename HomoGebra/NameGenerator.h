@@ -3,8 +3,7 @@
 #include <string>
 
 #include "Dictionary.h"
-namespace HomoGebra
-{
+namespace HomoGebra {
 using ParsedNumber = std::optional<size_t>;
 
 /**
@@ -16,8 +15,7 @@ using ParsedNumber = std::optional<size_t>;
  *
  * \date April 2023
  */
-struct ParsedSubname
-{
+struct ParsedSubname {
   std::string subname;  //!< Subname.
   ParsedNumber number;  //!< Number.
 
@@ -58,8 +56,7 @@ struct ParsedSubname
  *
  * \date April 2023
  */
-struct ParsedName
-{
+struct ParsedName {
   std::string name;              //!< Name.
   ParsedSubname parsed_subname;  //!< Parsed subname.
 
@@ -106,8 +103,7 @@ using NameDictionary = Dictionary<ParsedName>;
  *
  * \date April 2023
  */
-class NameGenerator
-{
+class NameGenerator {
  public:
   static constexpr char kDelimiter = '_';  //!< Delimiter for subnames.
 

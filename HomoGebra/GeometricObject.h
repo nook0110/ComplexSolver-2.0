@@ -6,8 +6,7 @@
 #include "GeometricObjectImplementation.h"
 #include "PlaneImplementation.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * \brief Base class for geometric objects.
  *
@@ -22,8 +21,7 @@ namespace HomoGebra
  * \see Conic
  */
 class GeometricObject : public sf::Drawable,
-                        public ObservableInterface<GeometricObjectObserver>
-{
+                        public ObservableInterface<GeometricObjectObserver> {
  public:
   /**
    * \brief Default destructor.
@@ -95,8 +93,7 @@ class GeometricObject : public sf::Drawable,
  * \see PointBody
  * \see PointImplementation
  */
-class Point final : public GeometricObject
-{
+class Point final : public GeometricObject {
  public:
   /**
    * \brief Construct point on a plane with equation.
@@ -213,8 +210,7 @@ class LineBody;
  * \see LineBody
  * \see LineImplementation
  */
-class Line final : public GeometricObject
-{
+class Line final : public GeometricObject {
  public:
   /**
    * \brief Construct line on a plane with equation.

@@ -1,19 +1,16 @@
 #include "ButtonElement.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 template <class GeometricObjectType>
 void ObjectSelector<GeometricObjectType>::Update(
-    const PlaneEvent::ObjectRemoved& object_removed)
-{
+    const PlaneEvent::ObjectRemoved& object_removed) {
   if (ObjectSelectorBody<GeometricObjectType>::GetObject() ==
       object_removed.removed_object)
     ObjectSelectorBody<GeometricObjectType>::SetObject(nullptr);
 }
 
 template <class GeometricObjectType>
-GeometricObjectType* ObjectSelector<GeometricObjectType>::operator()() const
-{
+GeometricObjectType* ObjectSelector<GeometricObjectType>::operator()() const {
   return ObjectSelectorBody<GeometricObjectType>::GetObject();
 }
 

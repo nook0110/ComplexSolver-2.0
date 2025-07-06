@@ -1,14 +1,13 @@
 #pragma once
+#include <memory>
+
 #include "Construction.h"
 #include "Equation.h"
 #include "Observer.h"
 
-#include <memory>
-
 class GeometricObject;
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * \brief Base class for implementations of geometric objects.
  *
@@ -23,8 +22,7 @@ namespace HomoGebra
  * \see ConicImplementation
  *
  */
-class GeometricObjectImplementation : public ObservableGeometricObject
-{
+class GeometricObjectImplementation : public ObservableGeometricObject {
  public:
   /**
    * \brief Destructor.
@@ -47,8 +45,7 @@ class GeometricObjectImplementation : public ObservableGeometricObject
  *
  * \see Point
  */
-class PointImplementation final : public GeometricObjectImplementation
-{
+class PointImplementation final : public GeometricObjectImplementation {
  public:
   /**
    * \brief Construct a point with given equation.
@@ -89,8 +86,7 @@ class PointImplementation final : public GeometricObjectImplementation
  *
  * \see Line
  */
-class LineImplementation : public GeometricObjectImplementation
-{
+class LineImplementation : public GeometricObjectImplementation {
  public:
   /**
    * \brief Construct a line with given equation.

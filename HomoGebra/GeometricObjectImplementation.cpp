@@ -2,14 +2,11 @@
 
 #include <utility>
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 PointImplementation::PointImplementation(PointEquation equation)
-    : equation_(std::move(equation))
-{}
+    : equation_(std::move(equation)) {}
 
-void PointImplementation::SetEquation(PointEquation equation)
-{
+void PointImplementation::SetEquation(PointEquation equation) {
   // Set equation
   equation_ = std::move(equation);
 
@@ -17,18 +14,15 @@ void PointImplementation::SetEquation(PointEquation equation)
   Notify(ObjectEvent::Moved());
 }
 
-const PointEquation& PointImplementation::GetEquation() const
-{
+const PointEquation& PointImplementation::GetEquation() const {
   // Return equation
   return equation_;
 }
 
 LineImplementation::LineImplementation(LineEquation equation)
-    : equation_(std::move(equation))
-{}
+    : equation_(std::move(equation)) {}
 
-void LineImplementation::SetEquation(LineEquation equation)
-{
+void LineImplementation::SetEquation(LineEquation equation) {
   // Set equation
   equation_ = std::move(equation);
 
@@ -36,8 +30,7 @@ void LineImplementation::SetEquation(LineEquation equation)
   Notify(ObjectEvent::Moved());
 }
 
-const LineEquation& LineImplementation::GetEquation() const
-{
+const LineEquation& LineImplementation::GetEquation() const {
   // Return equation
   return equation_;
 }

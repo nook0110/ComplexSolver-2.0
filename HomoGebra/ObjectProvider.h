@@ -2,8 +2,7 @@
 #include "DistanceUtilities.h"
 #include "Plane.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * \brief Class that finds objects.
  *
@@ -13,8 +12,7 @@ namespace HomoGebra
  *
  * \date February 2023
  */
-class ObjectProvider
-{
+class ObjectProvider {
  public:
   /**
    * \brief Constructs an object provider from the plane.

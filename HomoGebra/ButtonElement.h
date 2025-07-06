@@ -2,8 +2,7 @@
 #include "Assert.h"
 #include "ButtonElementBody.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * @brief A class that represents an object selector for a specific geometric
  * object type.
@@ -14,8 +13,7 @@ namespace HomoGebra
  * @tparam GeometricObjectType The type of geometric object to select.
  */
 template <class GeometricObjectType>
-class ObjectSelector : public ObjectSelectorBody<GeometricObjectType>
-{
+class ObjectSelector : public ObjectSelectorBody<GeometricObjectType> {
  public:
   /**
    * @brief Updates the object selector when an object is removed from the
@@ -31,8 +29,7 @@ class ObjectSelector : public ObjectSelectorBody<GeometricObjectType>
    * @param plane A pointer to the plane on which the object selector operates.
    */
   explicit ObjectSelector(Plane* plane)
-      : ObjectSelectorBody<GeometricObjectType>(plane)
-  {}
+      : ObjectSelectorBody<GeometricObjectType>(plane) {}
 
   /**
    * @brief Returns a pointer to the selected geometric object.
@@ -51,8 +48,7 @@ class ObjectSelector : public ObjectSelectorBody<GeometricObjectType>
  * @tparam Factory The type of factory to wrap.
  */
 template <class Factory>
-class FactoryWrapper : public Factory
-{
+class FactoryWrapper : public Factory {
  public:
   /**
    * @brief Constructs a FactoryWrapper object.
@@ -73,10 +69,8 @@ class FactoryWrapper : public Factory
    * @param arguments The arguments to pass to the factory.
    */
   template <class... Args>
-  void operator()(Args&&... arguments) const
-  {
-    if ((!arguments || ...))
-    {
+  void operator()(Args&&... arguments) const {
+    if ((!arguments || ...)) {
       return;
     }
 
@@ -94,8 +88,7 @@ class FactoryWrapper : public Factory
  *
  * This class provides functionality to delete objects from the plane.
  */
-class Deleter
-{
+class Deleter {
  public:
   /**
    * @brief Constructs a Deleter object.
@@ -116,10 +109,8 @@ class Deleter
    * @param arguments The arguments to pass to the deleter.
    */
   template <class... Args>
-  void operator()(Args&&... arguments) const
-  {
-    if ((!arguments || ...))
-    {
+  void operator()(Args&&... arguments) const {
+    if ((!arguments || ...)) {
       return;
     }
 

@@ -2,14 +2,12 @@
 #include <optional>
 #include <vector>
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * \brief A squared matrix with augmentation.
  */
 template <typename UnderlyingType>
-class SquaredMatrix
-{
+class SquaredMatrix {
  public:
   /**
    * \brief Type aliases.

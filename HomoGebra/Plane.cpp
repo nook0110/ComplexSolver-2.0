@@ -5,22 +5,18 @@
 #include "Construction.h"
 #include "GeometricObject.h"
 
-namespace HomoGebra
-{
-void Plane::AddConstruction(std::unique_ptr<Construction> construction)
-{
+namespace HomoGebra {
+void Plane::AddConstruction(std::unique_ptr<Construction> construction) {
   // Add object to plane
   implementation_.AddConstruction(std::move(construction));
 }
 
-void Plane::DeleteObject(const GeometricObject* object)
-{
+void Plane::DeleteObject(const GeometricObject* object) {
   implementation_.DestroyObject(object);
 }
 
 template <class GeometricObjectType>
-std::vector<GeometricObject*> Plane::GetObjects() const
-{
+std::vector<GeometricObject*> Plane::GetObjects() const {
   return implementation_.GetObjects<GeometricObjectType>();
 }
 
@@ -30,39 +26,33 @@ template std::vector<GeometricObject*> Plane::GetObjects<GeometricObject>()
 template std::vector<GeometricObject*> Plane::GetObjects<Point>() const;
 template std::vector<GeometricObject*> Plane::GetObjects<Line>() const;
 
-void Plane::UpdateBodies(const sf::RenderTarget& target) const
-{
+void Plane::UpdateBodies(const sf::RenderTarget& target) const {
   // Update all objects
-  std::ranges::for_each(GetObjects<GeometricObject>(),
-                        [&target](const auto object)
-                        { object->UpdateBody(target); });
+  std::ranges::for_each(
+      GetObjects<GeometricObject>(),
+      [&target](const auto object) { object->UpdateBody(target); });
 }
 
-void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
+void Plane::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   //  Draw all objects
-  std::ranges::for_each(GetObjects<GeometricObject>(),
-                        [&target, &states](const auto object)
-                        { target.draw(*object, states); });
+  std::ranges::for_each(
+      GetObjects<GeometricObject>(),
+      [&target, &states](const auto object) { target.draw(*object, states); });
 }
 
-void Plane::Update(const UserEvent::Click& clicked_event)
-{
+void Plane::Update(const UserEvent::Click& clicked_event) {
   EventNotifier::Notify(clicked_event);
 }
 
-const NameGenerator& Plane::GetNameGenerator() const
-{
+const NameGenerator& Plane::GetNameGenerator() const {
   return implementation_.GetNameGenerator();
 }
 
-void Plane::Attach(PlaneObserver* observer)
-{
+void Plane::Attach(PlaneObserver* observer) {
   implementation_.Attach(observer);
 }
 
-void Plane::Detach(const PlaneObserver* observer)
-{
+void Plane::Detach(const PlaneObserver* observer) {
   implementation_.Detach(observer);
 }
 }  // namespace HomoGebra

@@ -5,8 +5,7 @@
 #include "Observer.h"
 #include "PlaneImplementation.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 class Construction;
 
 /**
@@ -24,8 +23,7 @@ class Construction;
 class Plane final : public sf::Drawable,
                     public ObservableInterface<PlaneObserver>,
                     public EventListener,
-                    public EventNotifier
-{
+                    public EventNotifier {
  public:
   using EventNotifier::Attach;
   using EventNotifier::Detach;

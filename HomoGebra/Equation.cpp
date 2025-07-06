@@ -2,7 +2,4 @@
 
 #include "Assert.h"
 
-namespace HomoGebra
-{
-
-}  // namespace HomoGebra
+namespace HomoGebra {}  // namespace HomoGebra

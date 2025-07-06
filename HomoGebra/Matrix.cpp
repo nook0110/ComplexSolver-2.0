@@ -259,7 +259,7 @@ SquaredMatrix<UnderlyingType>::end() const {
  */
 template <>
 bool SquaredMatrix<float>::IsZero(const float& value) const {
-  return std::abs(value) < 0.001; // TODO (blokthin)
+  return std::abs(value) < 0.001;  // TODO (blokthin)
 }
 template class SquaredMatrix<float>;
 }  // namespace HomoGebra

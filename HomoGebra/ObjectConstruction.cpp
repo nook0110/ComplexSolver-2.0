@@ -7,20 +7,16 @@
 #include "GeometricObject.h"
 #include "Matrix.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 GeometricObject* ConstructionPoint::GetObject() const { return GetPoint(); }
 
-Point* ConstructionPoint::GetPoint() const
-{
+Point* ConstructionPoint::GetPoint() const {
   // Return point
   return point_.get();
 }
-void ConstructionPoint::Update(const ObjectEvent::GoingToBeDestroyed& event)
-{
+void ConstructionPoint::Update(const ObjectEvent::GoingToBeDestroyed& event) {
   // Check if event object is point that we contain
-  if (event.object == GetObject())
-  {
+  if (event.object == GetObject()) {
     point_.reset();
     return;
   }
@@ -29,53 +25,44 @@ void ConstructionPoint::Update(const ObjectEvent::GoingToBeDestroyed& event)
   point_->AlertDestruction();
 }
 
-void ConstructionPoint::Update(const ObjectEvent::Renamed& renamed_event)
-{
+void ConstructionPoint::Update(const ObjectEvent::Renamed& renamed_event) {
   // Renaming has no effect on object
 }
 
-const PointEquation& ConstructionPoint::GetEquation() const
-{
+const PointEquation& ConstructionPoint::GetEquation() const {
   // Return point equation
   return point_->GetEquation();
 }
 
-void ConstructionPoint::SetEquation(PointEquation equation) const
-{
+void ConstructionPoint::SetEquation(PointEquation equation) const {
   // Set new equation
   point_->SetEquation(std::move(equation));
 }
 
 PointOnPlane::PointOnPlane(PointEquation equation)
-    : ConstructionPoint(), equation_(std::move(equation))
-{
+    : ConstructionPoint(), equation_(std::move(equation)) {
   // Set equation
   PointOnPlane::RecalculateEquation();
 }
 
-void PointOnPlane::RecalculateEquation()
-{
+void PointOnPlane::RecalculateEquation() {
   // Set equation
   // SetEquation(equation_);
 }
 
-GeometricObject* ConstructionLine::GetObject() const
-{
+GeometricObject* ConstructionLine::GetObject() const {
   // Return line
   return GetLine();
 }
 
-Line* ConstructionLine::GetLine() const
-{
+Line* ConstructionLine::GetLine() const {
   // Return line
   return line_.get();
 }
 
-void ConstructionLine::Update(const ObjectEvent::GoingToBeDestroyed& event)
-{
+void ConstructionLine::Update(const ObjectEvent::GoingToBeDestroyed& event) {
   // Check if event object is line that we contain
-  if (event.object == GetObject())
-  {
+  if (event.object == GetObject()) {
     // Destroy the line
     line_.reset();
     return;
@@ -87,33 +74,29 @@ void ConstructionLine::Update(const ObjectEvent::GoingToBeDestroyed& event)
 
 void ConstructionLine::Update(const ObjectEvent::Renamed& event) {}
 
-const LineEquation& ConstructionLine::GetEquation() const
-{
+const LineEquation& ConstructionLine::GetEquation() const {
   // Return line equation
   return line_->GetEquation();
 }
 
-void ConstructionLine::SetEquation(const LineEquation& equation) const
-{
+void ConstructionLine::SetEquation(const LineEquation& equation) const {
   // Set new equation
   line_->SetEquation(equation);
 }
 
-LineOnPlane::LineOnPlane(LineEquation equation) : equation_(std::move(equation))
-{
+LineOnPlane::LineOnPlane(LineEquation equation)
+    : equation_(std::move(equation)) {
   // Set equation
   LineOnPlane::RecalculateEquation();
 }
 
-void LineOnPlane::RecalculateEquation()
-{
+void LineOnPlane::RecalculateEquation() {
   // Set equation
   // SetEquation(equation_);
 }
 
 ByTwoPoints::ByTwoPoints(Point* first_point, Point* second_point)
-    : first_point_(first_point), second_point_(second_point)
-{
+    : first_point_(first_point), second_point_(second_point) {
   // Attach to points
   first_point_->Attach(this);
   second_point_->Attach(this);
@@ -122,15 +105,13 @@ ByTwoPoints::ByTwoPoints(Point* first_point, Point* second_point)
   RecalculateEquation();
 }
 
-ByTwoPoints::~ByTwoPoints()
-{
+ByTwoPoints::~ByTwoPoints() {
   // Detach from points
   first_point_->Detach(this);
   second_point_->Detach(this);
 }
 
-void ByTwoPoints::RecalculateEquation()
-{
+void ByTwoPoints::RecalculateEquation() {
   // Construct equation
 
   // Calculate equation of a line that goes through 2 points
@@ -152,8 +133,7 @@ void ByTwoPoints::RecalculateEquation()
   auto& first_row = matrix[0];
 
   // Set first row
-  for (size_t column = 0; column < first_row.size(); ++column)
-  {
+  for (size_t column = 0; column < first_row.size(); ++column) {
     first_row[column] = f_equation[static_cast<Var>(column)];
   }
 
@@ -161,8 +141,7 @@ void ByTwoPoints::RecalculateEquation()
   auto& second_row = matrix[1];
 
   // Set second row
-  for (size_t column = 0; column < second_row.size(); ++column)
-  {
+  for (size_t column = 0; column < second_row.size(); ++column) {
     second_row[column] = s_equation[static_cast<Var>(column)];
   }
 
@@ -188,6 +167,6 @@ void ByTwoPoints::RecalculateEquation()
   const auto& value = *solution;
 
   // Create equation
-  SetEquation(LineEquation()); // TODO(blokhtin)
+  SetEquation(LineEquation());  // TODO(blokhtin)
 }
 }  // namespace HomoGebra

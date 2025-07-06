@@ -3,20 +3,21 @@
 #include "Input.h"
 #include "Plane.h"
 
-namespace HomoGebra
-{ /**
-   * \brief Represents the body of an ObjectSelector.
-   *
-   * The ObjectSelectorBody class is responsible for managing the selection of
-   * geometric objects in a plane. It provides methods to set and get the
-   * selected object, as well as drawing the body of the selector, including the
-   * name of the selected object and a list of objects to choose from.
-   *
-   * \tparam GeometricObjectType The type of geometric object to be selected.
-   */
+namespace HomoGebra { /**
+                       * \brief Represents the body of an ObjectSelector.
+                       *
+                       * The ObjectSelectorBody class is responsible for
+                       * managing the selection of geometric objects in a plane.
+                       * It provides methods to set and get the selected object,
+                       * as well as drawing the body of the selector, including
+                       * the name of the selected object and a list of objects
+                       * to choose from.
+                       *
+                       * \tparam GeometricObjectType The type of geometric
+                       * object to be selected.
+                       */
 template <class GeometricObjectType>
-class ObjectSelectorBody : public PlaneObserver
-{
+class ObjectSelectorBody : public PlaneObserver {
  public:
   /**
    * \brief Constructs an ObjectSelectorBody object.
@@ -24,8 +25,7 @@ class ObjectSelectorBody : public PlaneObserver
    * \param plane The plane to associate with the ObjectSelectorBody.
    */
   explicit ObjectSelectorBody(Plane* plane)
-      : plane_(plane), object_getter_(plane)
-  {
+      : plane_(plane), object_getter_(plane) {
     plane->Attach(this);
   }
 

@@ -1,12 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Construction.h"
 #include "Equation.h"
 
-#include <memory>
-
-namespace HomoGebra
-{
+namespace HomoGebra {
 class GeometricObject;
 class Point;
 class Conic;
@@ -22,8 +21,7 @@ class Line;
  * \date February 2023
  *
  */
-class ConstructionPoint : public Construction
-{
+class ConstructionPoint : public Construction {
  public:
   /**
    * \brief Default destructor.
@@ -101,8 +99,7 @@ class ConstructionPoint : public Construction
  *
  * \details Have no dependence on other objects
  */
-class PointOnPlane : public ConstructionPoint, public StrongConstruction
-{
+class PointOnPlane : public ConstructionPoint, public StrongConstruction {
  public:
   /**
    * \brief Constructs point by equation
@@ -136,8 +133,7 @@ class PointOnPlane : public ConstructionPoint, public StrongConstruction
  *
  * \date April 2023
  */
-class ConstructionFromTwoLines : public ConstructionPoint
-{};
+class ConstructionFromTwoLines : public ConstructionPoint {};
 
 /**
  * \brief Base class for all line constructions.
@@ -150,8 +146,7 @@ class ConstructionFromTwoLines : public ConstructionPoint
  *
  * \details Updates position of line
  */
-class ConstructionLine : public Construction
-{
+class ConstructionLine : public Construction {
  public:
   /**
    * \brief Default destructor.
@@ -212,8 +207,7 @@ class ConstructionLine : public Construction
  *
  * \date July 2023
  */
-class LineOnPlane final : public ConstructionLine
-{
+class LineOnPlane final : public ConstructionLine {
  public:
   /**
    * \brief Constructs line by equation.
@@ -237,8 +231,7 @@ class LineOnPlane final : public ConstructionLine
  *
  * \date July 2023
  */
-class ByTwoPoints final : public ConstructionLine, public StrongConstruction
-{
+class ByTwoPoints final : public ConstructionLine, public StrongConstruction {
  public:
   /**
    * \brief Constructs line by two points.

@@ -6,19 +6,16 @@
 #include "Equation.h"
 #include "GeometricObjectImplementation.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 Point::Point(PointEquation equation) : implementation_(std::move(equation)) {}
 
-void Point::AlertDestruction() const
-{
+void Point::AlertDestruction() const {
   // Notify observers that object was destroyed
   Notify(ObjectEvent::GoingToBeDestroyed{this});
 }
 
 template <class Event>
-void Point::Notify(const Event& event) const
-{
+void Point::Notify(const Event& event) const {
   // Call implementation method
   implementation_.Notify(event);
 }
@@ -29,48 +26,40 @@ template void Point::Notify<ObjectEvent::GoingToBeDestroyed>(
 template void Point::Notify<ObjectEvent::Renamed>(
     const ObjectEvent::Renamed& event) const;
 
-void Point::SetEquation(PointEquation equation)
-{
+void Point::SetEquation(PointEquation equation) {
   // Set equation in implementation
   implementation_.SetEquation(std::move(equation));
 }
 
-const PointEquation& Point::GetEquation() const
-{
+const PointEquation& Point::GetEquation() const {
   // Return equation
   return implementation_.GetEquation();
 }
 
-Distance Point::GetDistance(const sf::Vector2f& position) const
-{
+Distance Point::GetDistance(const sf::Vector2f& position) const {
   return body_.GetDistance(position);
 }
 
-void Point::Attach(GeometricObjectObserver* observer)
-{
+void Point::Attach(GeometricObjectObserver* observer) {
   // Call implementation method
   implementation_.Attach(observer);
 }
 
-void Point::Detach(const GeometricObjectObserver* observer)
-{
+void Point::Detach(const GeometricObjectObserver* observer) {
   implementation_.Detach(observer);
 }
 
-void Point::UpdateBody(const sf::RenderTarget& target)
-{
+void Point::UpdateBody(const sf::RenderTarget& target) {
   // Update body
   body_.Update(target, implementation_.GetEquation());
 }
 
-void Point::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
+void Point::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   // Draw body
   target.draw(body_, states);
 }
 
-void Point::SetName(std::string name)
-{
+void Point::SetName(std::string name) {
   const ObjectEvent::Renamed renamed{this, body_.GetName(), name};
 
   // Set name in body
@@ -80,46 +69,39 @@ void Point::SetName(std::string name)
   Notify(renamed);
 }
 
-const std::string& Point::GetName() const
-{
+const std::string& Point::GetName() const {
   // Return name
   return body_.GetName();
 }
 
 Line::Line(LineEquation equation) : implementation_(std::move(equation)) {}
 
-void Line::AlertDestruction() const
-{
+void Line::AlertDestruction() const {
   // Notify observers that object was destroyed
   Notify(ObjectEvent::GoingToBeDestroyed{this});
 }
 
-void Line::SetEquation(LineEquation equation)
-{
+void Line::SetEquation(LineEquation equation) {
   // Set equation in implementation
   implementation_.SetEquation(std::move(equation));
 }
 
-const LineEquation& Line::GetEquation() const
-{
+const LineEquation& Line::GetEquation() const {
   // Return equation
   return implementation_.GetEquation();
 }
 
-void Line::UpdateBody(const sf::RenderTarget& target)
-{
+void Line::UpdateBody(const sf::RenderTarget& target) {
   // Update body
   body_.Update(implementation_.GetEquation());
 }
 
-void Line::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
+void Line::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   // Draw body
   target.draw(body_, states);
 }
 
-void Line::SetName(std::string name)
-{
+void Line::SetName(std::string name) {
   const ObjectEvent::Renamed renamed{this, body_.GetName(), name};
 
   // Set name in body
@@ -129,31 +111,26 @@ void Line::SetName(std::string name)
   Notify(renamed);
 }
 
-const std::string& Line::GetName() const
-{
+const std::string& Line::GetName() const {
   // Return name
   return body_.GetName();
 }
 
-void Line::Attach(GeometricObjectObserver* observer)
-{
+void Line::Attach(GeometricObjectObserver* observer) {
   // Call implementation method
   implementation_.Attach(observer);
 }
 
-void Line::Detach(const GeometricObjectObserver* observer)
-{
+void Line::Detach(const GeometricObjectObserver* observer) {
   implementation_.Detach(observer);
 }
 
-Distance Line::GetDistance(const sf::Vector2f& position) const
-{
+Distance Line::GetDistance(const sf::Vector2f& position) const {
   return body_.GetDistance(position);
 }
 
 template <class Event>
-void Line::Notify(const Event& event) const
-{
+void Line::Notify(const Event& event) const {
   // Call implementation method
   implementation_.Notify(event);
 }

@@ -2,10 +2,8 @@
 
 #include "SFML/Graphics.hpp"
 
-namespace HomoGebra
-{
-namespace Gui
-{
+namespace HomoGebra {
+namespace Gui {
 /**
  * \brief Global functions needed for Dear ImGui to work.
  *
@@ -20,8 +18,7 @@ namespace Gui
  * \see <a href="https://github.com/ocornut/imgui">Dear ImGui</a>
  * \see <a href="https://github.com/eliasdaler/imgui-sfml">ImGui-SFML v2.5</a>
  */
-class Global
-{
+class Global {
  public:
   /**
    * \brief Updates all Dear ImGui windows in sf::RenderWindow instance.

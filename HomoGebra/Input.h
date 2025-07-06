@@ -2,8 +2,7 @@
 #include "EventNotifier.h"
 #include "ObjectProvider.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * \brief Class to get the last object that user clicked on.
  *
@@ -16,8 +15,7 @@ namespace HomoGebra
  * \date April 2023
  */
 template <class GeometricObjectType>
-class NearbyObjectGetter final : public EventListener
-{
+class NearbyObjectGetter final : public EventListener {
  public:
   /**
    * \brief Constructor.

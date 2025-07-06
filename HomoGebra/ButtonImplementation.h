@@ -3,21 +3,13 @@
 
 #include "Plane.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 template <class T>
 concept ButtonElement = requires(T button_part) {
-  {
-    T{new Plane{}}
-  };
-  {
-    button_part.Draw()
-  };
-} && requires(const T button_part) {
-  {
-    button_part()
-  };
-};
+  {T{new Plane{}}};
+  {button_part.Draw()};
+}
+&&requires(const T button_part) { {button_part()}; };
 
 /**
  * \brief Wrapper of element
@@ -26,8 +18,7 @@ concept ButtonElement = requires(T button_part) {
  * \tparam index Index.
  */
 template <class Element, size_t index = 0>
-struct Wrapper : Element
-{
+struct Wrapper : Element {
   explicit Wrapper(Plane* plane) : Element(plane) {}
 };
 
@@ -46,8 +37,7 @@ struct Wrapper : Element
  */
 template <ButtonElement First, class... Rest>
 class ButtonImplementation : public Wrapper<First, sizeof...(Rest)>,
-                             public ButtonImplementation<Rest...>
-{
+                             public ButtonImplementation<Rest...> {
  public:
   /**
    * \brief Construct button for plane.
@@ -56,15 +46,13 @@ class ButtonImplementation : public Wrapper<First, sizeof...(Rest)>,
    */
   explicit ButtonImplementation(Plane* plane)
       : Wrapper<First, sizeof...(Rest)>(plane),
-        ButtonImplementation<Rest...>(plane)
-  {}
+        ButtonImplementation<Rest...>(plane) {}
 
   /**
    * \brief Draws button.
    *
    */
-  void Draw()
-  {
+  void Draw() {
     Wrapper<First, sizeof...(Rest)>::Draw();
     ButtonImplementation<Rest...>::Draw();
   }
@@ -93,8 +81,7 @@ class ButtonImplementation : public Wrapper<First, sizeof...(Rest)>,
  * \date July 2023
  */
 template <ButtonElement First>
-class ButtonImplementation<First> : public Wrapper<First, 0>
-{
+class ButtonImplementation<First> : public Wrapper<First, 0> {
  public:
   /**
    * \brief Construct button for plane.
@@ -121,8 +108,7 @@ class ButtonImplementation<First> : public Wrapper<First, 0>
 
 template <ButtonElement First, class... Rest>
 template <class... Args>
-void ButtonImplementation<First, Rest...>::PassArguments(Args&&... arguments)
-{
+void ButtonImplementation<First, Rest...>::PassArguments(Args&&... arguments) {
   ButtonImplementation<Rest...>::PassArguments(
       std::forward<Args>(arguments)...,
       Wrapper<First, sizeof...(Rest)>::operator()());
@@ -130,8 +116,7 @@ void ButtonImplementation<First, Rest...>::PassArguments(Args&&... arguments)
 
 template <ButtonElement First>
 template <class... Args>
-void ButtonImplementation<First>::PassArguments(Args&&... arguments)
-{
+void ButtonImplementation<First>::PassArguments(Args&&... arguments) {
   Wrapper<First, 0>::operator()(std::forward<Args>(arguments)...);
 }
 }  // namespace HomoGebra

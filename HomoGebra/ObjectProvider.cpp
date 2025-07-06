@@ -2,14 +2,12 @@
 
 #include "GeometricObject.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 ObjectProvider::ObjectProvider(Plane* plane) : plane_(plane) {}
 
 template <class GeometricObjectType>
 GeometricObjectType* ObjectProvider::GetNearestObject(
-    const sf::Vector2f& position, const Distance max_distance)
-{
+    const sf::Vector2f& position, const Distance max_distance) {
   // Get all GeometricObjectType objects
   auto objects = plane_->GetObjects<GeometricObjectType>();
 
@@ -17,14 +15,12 @@ GeometricObjectType* ObjectProvider::GetNearestObject(
   float current_distance = std::numeric_limits<float>::max();
 
   // Find nearest
-  for (auto& object : objects)
-  {
+  for (auto& object : objects) {
     // Get distance to object
     const auto distance = object->GetDistance(position);
 
     // Check if distance is less than current distance
-    if (distance < current_distance)
-    {
+    if (distance < current_distance) {
       // Update current distance
       current_distance = distance;
 
@@ -34,8 +30,7 @@ GeometricObjectType* ObjectProvider::GetNearestObject(
   }
 
   // Check if distance is less than max distance
-  if (current_distance < max_distance)
-  {
+  if (current_distance < max_distance) {
     // Return nearest object
     return nearest_object;
   }

@@ -1,8 +1,7 @@
 #pragma once
 #include "Observer.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 
 /**
  * \brief Construction that does not lose its properties after projective
@@ -16,8 +15,7 @@ namespace HomoGebra
  *
  * \see WeekTransformation
  */
-class StrongConstruction
-{};
+class StrongConstruction {};
 
 /**
  * \brief Defines how object is created.
@@ -31,8 +29,7 @@ class StrongConstruction
  * \details Updates positions of objects
  * \see GeometricObjectImplementation
  */
-class Construction : public GeometricObjectObserver
-{
+class Construction : public GeometricObjectObserver {
  public:
   /**
    * \brief Default destructor.

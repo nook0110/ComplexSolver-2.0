@@ -4,8 +4,7 @@
 
 #include "EventNotifier.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 /**
  * @brief The EventConverter class is responsible for converting SFML events
  * into custom actions.
@@ -13,8 +12,7 @@ namespace HomoGebra
  * It inherits from the EventNotifier class and provides functionality to handle
  * events such as clicks and unclicks.
  */
-class EventConverter : public EventNotifier
-{
+class EventConverter : public EventNotifier {
  public:
   /**
    * @brief Constructs an EventConverter object with the specified SFML render
@@ -35,8 +33,7 @@ class EventConverter : public EventNotifier
    * @brief The Action enum class represents the custom actions that can be
    * triggered by events.
    */
-  enum class Action
-  {
+  enum class Action {
     Click,  /**< Represents a click action. */
     Unclick /**< Represents an unclick action. */
   };

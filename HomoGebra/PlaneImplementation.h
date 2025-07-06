@@ -6,26 +6,21 @@
 #include "NameGenerator.h"
 #include "Observer.h"
 
-namespace HomoGebra
-{
+namespace HomoGebra {
 class GeometricObject;
 class Construction;
 
-class GarbageObjectCollector
-{
+class GarbageObjectCollector {
  public:
   [[nodiscard]] bool Empty() const { return objects_.empty(); }
 
-  void Append(const GeometricObject* object)
-  {
-    if (!std::ranges::contains(objects_, object))
-    {
+  void Append(const GeometricObject* object) {
+    if (!std::ranges::contains(objects_, object)) {
       objects_.push_back(object);
     }
   }
 
-  const GeometricObject* Pop()
-  {
+  const GeometricObject* Pop() {
     const auto last = objects_.back();
     objects_.pop_back();
     return last;
@@ -51,8 +46,7 @@ class GarbageObjectCollector
  * \see Plane
  */
 class PlaneImplementation : public GeometricObjectObserver,
-                            public ObservablePlane
-{
+                            public ObservablePlane {
  public:
   /**
    * \brief Default constructor.
