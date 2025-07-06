@@ -1,5 +1,6 @@
 #include "ObjectConstruction.h"
 
+#include <array>
 #include <random>
 #include <utility>
 
@@ -51,7 +52,7 @@ PointOnPlane::PointOnPlane(PointEquation equation)
 
 void PointOnPlane::RecalculateEquation() {
   // Set equation
-  // SetEquation(equation_);
+  SetEquation(equation_);
 }
 
 GeometricObject* ConstructionLine::GetObject() const {
@@ -100,7 +101,7 @@ LineOnPlane::LineOnPlane(LineEquation equation)
 
 void LineOnPlane::RecalculateEquation() {
   // Set equation
-  // SetEquation(equation_);
+  SetEquation(equation_);
 }
 
 ByTwoPoints::ByTwoPoints(Point* first_point, Point* second_point)
@@ -126,31 +127,30 @@ void ByTwoPoints::RecalculateEquation() {
   // We need to solve the system of equations [matrix]:
   // f_ is first, s_ is second
   // and r is random numbers
-  // | f_x f_y f_z | 0 |
-  // | s_x s_y s_z | 0 |
+  // | f_x f_y 1 | 0 |
+  // | s_x s_y 1 | 0 |
   // |  r   r   r  | 1 |
 
   // Get equations of points
-  const auto& f_equation = first_point_->GetEquation().GetEquation();
-  const auto& s_equation = second_point_->GetEquation().GetEquation();
+  const std::array equations = {first_point_->GetEquation().GetEquation(),
+                                second_point_->GetEquation().GetEquation()};
 
   // Create matrix
   FloatSquaredMatrix matrix{3};
 
-  // Get first row
-  auto& first_row = matrix[0];
+  // Set first two rows using equations
+  for (size_t row = 0; row < equations.size(); ++row) {
+    auto& matrix_row = matrix[row];
+    const auto& equation = equations[row];
 
-  // Set first row
-  for (size_t column = 0; column < first_row.size(); ++column) {
-    first_row[column] = f_equation[static_cast<Var>(column)];
-  }
+    for (size_t column = 0; column < matrix_row.size(); ++column) {
+      if (column == 2) {
+        matrix_row[column] = 1;
+        continue;
+      }
 
-  // Get second row
-  auto& second_row = matrix[1];
-
-  // Set second row
-  for (size_t column = 0; column < second_row.size(); ++column) {
-    second_row[column] = s_equation[static_cast<Var>(column)];
+      matrix_row[column] = equation[static_cast<Var>(column)];
+    }
   }
 
   // Get third row
@@ -159,11 +159,22 @@ void ByTwoPoints::RecalculateEquation() {
   // Set random number generator
   constexpr long double kLowerBound = -10000;
   constexpr long double kUpperBound = 10000;
-  std::uniform_real_distribution<double> uniform_real_distribution(kLowerBound,
-                                                                   kUpperBound);
+  std::uniform_real_distribution<float> uniform_real_distribution(kLowerBound,
+                                                                  kUpperBound);
   std::default_random_engine default_random_engine;
 
-  // TODO(blokhtin)
+  // Set third row
+  std::ranges::for_each(third_row, [&uniform_real_distribution,
+                                    &default_random_engine](float& value) {
+    value = uniform_real_distribution(default_random_engine);
+  });
+
+  // Get augmentation
+  auto& augmentation = matrix.GetAugmentation();
+
+  // Set augmentation
+  std::fill(augmentation.begin(), std::prev(augmentation.end()), 0);
+  augmentation.back() = 1;
 
   // Get solution
   const auto solution = matrix.GetSolution();
@@ -175,6 +186,6 @@ void ByTwoPoints::RecalculateEquation() {
   const auto& value = *solution;
 
   // Create equation
-  SetEquation(LineEquation());  // TODO(blokhtin)
+  SetEquation(LineEquation({value[0], value[1], value[2]}));
 }
 }  // namespace ComplexSolver

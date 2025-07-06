@@ -33,9 +33,9 @@ int main() {
   auto plane = std::make_unique<ComplexSolver::Plane>();
 
   auto first = ComplexSolver::PointOnPlaneFactory{plane.get()}(
-      ComplexSolver::PointEquation{});
+      ComplexSolver::PointEquation{{100.f, 100.f}});
   auto second = ComplexSolver::PointOnPlaneFactory{plane.get()}(
-      ComplexSolver::PointEquation{});
+      ComplexSolver::PointEquation{{-100.f, -100.f}});
 
   ComplexSolver::LineByTwoPointButton line_by_two_point_button{plane.get()};
   ComplexSolver::DeleteButton delete_button{plane.get()};

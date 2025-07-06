@@ -45,7 +45,9 @@ class PointEquation {
    *
    * \param equation Equation of point.
    */
-  explicit PointEquation() = default;
+  explicit PointEquation(
+      PointEquation::Equation equation = PointEquation::Equation{})
+      : equation_(equation){};
 
   /**
    * \brief Return current equation of point.
@@ -91,7 +93,9 @@ class LineEquation {
    *
    * \param equation Equation of line.
    */
-  explicit LineEquation() = default;
+  explicit LineEquation(
+      LineEquation::Equation equation = LineEquation::Equation{})
+      : equation_(equation) {}
 
   /**
    * \brief Return current equation of point.
