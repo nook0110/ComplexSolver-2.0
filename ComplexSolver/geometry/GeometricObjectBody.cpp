@@ -6,7 +6,7 @@
 #include <utility>
 
 #include "Assert.h"
-#include "Matrix.h"
+#include "utils/Matrix.h"
 
 namespace ComplexSolver {
 extern float CalculateSizeOfPixel(const sf::RenderTarget& target) {
@@ -190,8 +190,7 @@ std::optional<PointBody::ProjectivePosition> PointBody::CalculatePosition(
   // Get equation
   const auto& eq = equation.GetEquation();
 
-  return ProjectivePosition{
-      sf::Vector2f(eq.x, eq.y), false};
+  return ProjectivePosition{sf::Vector2f(eq.x, eq.y), false};
 }
 
 float PointBody::CalculateSizeOfBody(const sf::RenderTarget& target) {
@@ -213,9 +212,7 @@ void LineBody::Update(const LineEquation& line_equation) {
   const auto& equation = line_equation.GetEquation();
 
   // Set equation
-  Equation body_equation{equation.A,
-                         equation.B,
-                         equation.C};
+  Equation body_equation{equation.A, equation.B, equation.C};
 
   equation_ = body_equation;
 }

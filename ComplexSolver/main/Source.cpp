@@ -3,9 +3,9 @@
 
 #include "ButtonsImplementations.h"
 #include "EventConverter.h"
-#include "GeometricObject.h"
-#include "GeometricObjectFactory.h"
 #include "Gui.h"
+#include "geometry/GeometricObject.h"
+#include "geometry/GeometricObjectFactory.h"
 #include "imgui-SFML.h"
 #include "imgui.h"
 

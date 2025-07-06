@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "Construction.h"
-#include "NameGenerator.h"
-#include "Observer.h"
+#include "utils/NameGenerator.h"
+#include "utils/Observer.h"
 
 namespace ComplexSolver {
 class GeometricObject;

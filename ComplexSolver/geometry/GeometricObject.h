@@ -4,7 +4,7 @@
 
 #include "GeometricObjectBody.h"
 #include "GeometricObjectImplementation.h"
-#include "PlaneImplementation.h"
+#include "plane/PlaneImplementation.h"
 
 namespace ComplexSolver {
 /**

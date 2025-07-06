@@ -27,7 +27,7 @@ add_subdirectory(Thor)
 add_subdirectory(ComplexSolver)
 
 # Create executable using exported sources
-add_executable(Solver ${COMPLEX_SOLVER_SOURCES})
+add_executable(Solver ${COMPLEX_SOLVER_SOURCES} )
 
 # Apply configurations from ComplexSolver and link SFML targets
 target_link_libraries(Solver
@@ -47,5 +47,3 @@ target_include_directories(Solver PRIVATE
 )
 target_compile_definitions(Solver PRIVATE ${COMPLEX_SOLVER_DEFINITIONS})
 
-# Add tests
-add_subdirectory(ComplexSolver Tests)

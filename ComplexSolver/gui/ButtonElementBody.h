@@ -1,7 +1,7 @@
 #pragma once
-#include "GeometricObject.h"
-#include "Input.h"
-#include "Plane.h"
+#include "geometry/GeometricObject.h"
+#include "plane/Plane.h"
+#include "utils/Input.h"
 
 namespace ComplexSolver { /**
                            * \brief Represents the body of an ObjectSelector.

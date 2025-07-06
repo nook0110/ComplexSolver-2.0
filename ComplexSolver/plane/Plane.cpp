@@ -3,7 +3,7 @@
 #include <algorithm>
 
 #include "Construction.h"
-#include "GeometricObject.h"
+#include "geometry/GeometricObject.h"
 
 namespace ComplexSolver {
 void Plane::AddConstruction(std::unique_ptr<Construction> construction) {

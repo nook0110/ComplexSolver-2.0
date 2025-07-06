@@ -1,6 +1,6 @@
 #include "Input.h"
 
-#include "GeometricObject.h"
+#include "geometry/GeometricObject.h"
 
 namespace ComplexSolver {
 template <class GeometricObjectType>

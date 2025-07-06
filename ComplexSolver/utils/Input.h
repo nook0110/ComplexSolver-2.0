@@ -1,6 +1,6 @@
 #pragma once
 #include "EventNotifier.h"
-#include "ObjectProvider.h"
+#include "geometry/ObjectProvider.h"
 
 namespace ComplexSolver {
 /**

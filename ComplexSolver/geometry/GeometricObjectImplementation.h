@@ -3,7 +3,7 @@
 
 #include "Construction.h"
 #include "Equation.h"
-#include "Observer.h"
+#include "utils/Observer.h"
 
 class GeometricObject;
 

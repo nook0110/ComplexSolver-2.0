@@ -1,6 +1,6 @@
 #pragma once
 #include "DistanceUtilities.h"
-#include "Plane.h"
+#include "plane/Plane.h"
 
 namespace ComplexSolver {
 /**

@@ -2,8 +2,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "EventNotifier.h"
-#include "Observer.h"
 #include "PlaneImplementation.h"
+#include "utils/Observer.h"
 
 namespace ComplexSolver {
 class Construction;

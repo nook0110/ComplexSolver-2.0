@@ -1,5 +1,5 @@
 #pragma once
-#include "GeometricObject.h"
+#include "geometry/GeometricObject.h"
 
 namespace ComplexSolver {
 inline bool ObjectsNameGetter(void* data, int index, const char** name) {

@@ -1,7 +1,7 @@
 #pragma once
 #include "Button.h"
 #include "ButtonElement.h"
-#include "GeometricObjectFactory.h"
+#include "geometry/GeometricObjectFactory.h"
 #include "imgui.h"
 
 namespace ComplexSolver {

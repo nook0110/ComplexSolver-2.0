@@ -1,4 +1,5 @@
 #include "ComplexSolverWindow.h"
+
 #include <SFML/Window.hpp>
 
 namespace ComplexSolver {

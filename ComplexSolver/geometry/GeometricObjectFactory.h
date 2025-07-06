@@ -1,7 +1,7 @@
 #pragma once
 #include "Assert.h"
 #include "GeometricObject.h"
-#include "Plane.h"
+#include "plane/Plane.h"
 
 namespace ComplexSolver {
 /**

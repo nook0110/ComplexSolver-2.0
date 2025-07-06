@@ -20,4 +20,4 @@ void Global::ProcessEvent(sf::RenderWindow& window, const sf::Event& event) {
   // Just calls ImGui ImGui::SFML::ProcessEvent method
   ImGui::SFML::ProcessEvent(window, event);
 }
-} // namespace ComplexSolver::Gui  // namespace ComplexSolver
+}  // namespace ComplexSolver::Gui

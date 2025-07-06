@@ -5,7 +5,7 @@
 
 #include "Assert.h"
 #include "GeometricObject.h"
-#include "Matrix.h"
+#include "utils/Matrix.h"
 
 namespace ComplexSolver {
 ConstructionPoint::~ConstructionPoint() = default;
