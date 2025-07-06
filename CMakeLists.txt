@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(HomoGebra)
+project(ComplexSolver)
 
 # Generate compile_commands.json for tooling
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -24,28 +24,28 @@ set(SFML_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SFML/install/lib/cmake/SFML" CACHE PAT
 add_subdirectory(Thor)
 
 # Add main project
-add_subdirectory(HomoGebra)
+add_subdirectory(ComplexSolver)
 
 # Create executable using exported sources
-add_executable(Solver ${HOMOGEBRA_SOURCES})
+add_executable(Solver ${COMPLEX_SOLVER_SOURCES})
 
-# Apply configurations from HomoGebra and link SFML targets
+# Apply configurations from ComplexSolver and link SFML targets
 target_link_libraries(Solver
-    ${HOMOGEBRA_LIBRARIES}
+    ${COMPLEX_SOLVER_LIBRARIES}
     sfml-graphics
     sfml-window
     sfml-system
     thor
 )
 target_include_directories(Solver PRIVATE
-    ${HOMOGEBRA_INCLUDE_DIRS}
+    ${COMPLEX_SOLVER_INCLUDE_DIRS}
     ${CMAKE_CURRENT_SOURCE_DIR}/Thor/include
     ${CMAKE_CURRENT_SOURCE_DIR}/Aurora/include
     ${CMAKE_CURRENT_SOURCE_DIR}/SFML/install/include
     ${CMAKE_CURRENT_SOURCE_DIR}/imgui
     ${CMAKE_CURRENT_SOURCE_DIR}/imgui-sfml
 )
-target_compile_definitions(Solver PRIVATE ${HOMOGEBRA_DEFINITIONS})
+target_compile_definitions(Solver PRIVATE ${COMPLEX_SOLVER_DEFINITIONS})
 
 # Add tests
-add_subdirectory(HomoGebra Tests)
+add_subdirectory(ComplexSolver Tests)
