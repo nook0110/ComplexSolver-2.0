@@ -1,12 +1,12 @@
 #pragma once
 #include <utility>
 
-#include "plane/Plane.h"
-
 namespace ComplexSolver {
+class Plane;
+
 template <class T>
 concept ButtonElement = requires(T button_part) {
-  {T{new Plane{}}};
+  {T{static_cast<Plane*>(nullptr)}};
   {button_part.Draw()};
 }
 &&requires(const T button_part) { {button_part()}; };
@@ -17,7 +17,7 @@ concept ButtonElement = requires(T button_part) {
  * \tparam Element Element to wrap.
  * \tparam index Index.
  */
-template <class Element, size_t index = 0>
+template <class Element, std::size_t index = 0>
 struct Wrapper : Element {
   explicit Wrapper(Plane* plane) : Element(plane) {}
 };

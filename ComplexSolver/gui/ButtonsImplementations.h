@@ -38,7 +38,8 @@ class WindowButton : public ButtonClass {
   std::string name_; /**< The name of the button. */
 };
 
-/**
+/**class Li
+
  * @brief A class representing a button for creating a line by two points.
  *
  * This class is a specialization of the WindowButton class.

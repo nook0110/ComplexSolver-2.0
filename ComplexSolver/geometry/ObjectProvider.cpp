@@ -1,6 +1,8 @@
 #include "ObjectProvider.h"
 
 #include "GeometricObject.h"
+#include "plane/Plane.h"
+
 
 namespace ComplexSolver {
 ObjectProvider::ObjectProvider(Plane* plane) : plane_(plane) {}

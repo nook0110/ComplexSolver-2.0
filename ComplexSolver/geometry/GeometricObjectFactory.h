@@ -1,9 +1,9 @@
 #pragma once
 #include "Assert.h"
 #include "GeometricObject.h"
-#include "plane/Plane.h"
 
 namespace ComplexSolver {
+class Plane;
 /**
  * \class PointOnPlaneFactory
  * \brief Factory class for constructing points on a plane.

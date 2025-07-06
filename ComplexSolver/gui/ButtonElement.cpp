@@ -1,5 +1,7 @@
 #include "ButtonElement.h"
 
+#include "geometry/GeometricObject.h"
+
 namespace ComplexSolver {
 template <class GeometricObjectType>
 void ObjectSelector<GeometricObjectType>::Update(

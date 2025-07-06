@@ -5,8 +5,16 @@
 #include <vector>
 
 #include "GuiUtilities.h"
+#include "geometry/GeometricObject.h"
+#include "plane/Plane.h"
 
 namespace ComplexSolver {
+template <class GeometricObjectType>
+ObjectSelectorBody<GeometricObjectType>::ObjectSelectorBody(Plane* plane)
+    : plane_(plane), object_getter_(plane) {
+  plane->Attach(this);
+}
+
 template <class GeometricObjectType>
 void ObjectSelectorBody<GeometricObjectType>::Draw() {
   ImGui::PushID(this);

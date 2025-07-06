@@ -1,8 +1,8 @@
 #pragma once
 #include "DistanceUtilities.h"
-#include "plane/Plane.h"
 
 namespace ComplexSolver {
+class Plane;
 /**
  * \brief Class that finds objects.
  *

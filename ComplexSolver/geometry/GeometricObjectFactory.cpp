@@ -1,6 +1,7 @@
 ﻿#include "GeometricObjectFactory.h"
 
 #include "ObjectConstruction.h"
+#include "plane/Plane.h"
 
 namespace ComplexSolver {
 Point* PointOnPlaneFactory::operator()(PointEquation equation) const {
