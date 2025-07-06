@@ -30,7 +30,7 @@ void ConstructionPoint::Update(const ObjectEvent::Renamed& renamed_event) {
 }
 
 const PointEquation& ConstructionPoint::GetEquation() const {
-  // Return point equation
+  // Return point equationHomoGebra
   return point_->GetEquation();
 }
 

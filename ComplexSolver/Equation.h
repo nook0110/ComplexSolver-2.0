@@ -25,17 +25,17 @@ class PointEquation {
 
     float& operator[](Var var) {
       switch (var) {
-        case ComplexSolver::Var::kX:
+        case Var::kX:
           return x;
-        case ComplexSolver::Var::kY:
+        case Var::kY:
           return y;
       }
     }
     const float& operator[](Var var) const {
       switch (var) {
-        case ComplexSolver::Var::kX:
+        case Var::kX:
           return x;
-        case ComplexSolver::Var::kY:
+        case Var::kY:
           return y;
       }
     }

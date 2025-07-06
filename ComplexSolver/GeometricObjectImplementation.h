@@ -23,7 +23,7 @@ namespace ComplexSolver {
  *
  */
 class GeometricObjectImplementation
-    : public ComplexSolver::ObservableGeometricObject {
+    : public ObservableGeometricObject {
  public:
   /**
    * \brief Destructor.

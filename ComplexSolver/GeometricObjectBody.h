@@ -125,7 +125,7 @@ class ObjectBody : public sf::Drawable {
    *
    * \return Distance from object to position.
    */
-  [[nodiscard]] virtual ComplexSolver::Distance GetDistance(
+  [[nodiscard]] virtual Distance GetDistance(
       const sf::Vector2f& position) const = 0;
 
  private:
@@ -161,7 +161,7 @@ class PointBody final : public ObjectBody {
    * \param equation Equation of the point.
    * \param size Size of the point.
    */
-  void Update(const sf::RenderTarget& target, const ComplexSolver::PointEquation& equation);
+  void Update(const sf::RenderTarget& target, const PointEquation& equation);
 
   /**
    * \brief Draw the point to a render target.
@@ -179,7 +179,7 @@ class PointBody final : public ObjectBody {
    */
   void DrawArrow(sf::RenderTarget& target, sf::RenderStates states) const;
 
-  ComplexSolver::Distance GetDistance(const sf::Vector2f& position) const override;
+  Distance GetDistance(const sf::Vector2f& position) const override;
 
  private:
   /**
@@ -209,7 +209,7 @@ class PointBody final : public ObjectBody {
    * \return Projective position of the point.
    */
   static std::optional<ProjectivePosition> CalculatePosition(
-      const ComplexSolver::PointEquation& equation);
+      const PointEquation& equation);
 
   /**
    * \brief Calculates size of a body
@@ -265,7 +265,7 @@ class LineBody final : public ObjectBody {
    */
   void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-  ComplexSolver::Distance GetDistance(const sf::Vector2f& position) const override;
+  Distance GetDistance(const sf::Vector2f& position) const override;
 
  private:
   /**
