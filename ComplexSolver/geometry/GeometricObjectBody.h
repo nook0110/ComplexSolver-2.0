@@ -58,8 +58,6 @@ class ObjectName final : public sf::Drawable, public sf::Transformable {
   void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
  private:
-  inline static const std::string kFontPath =
-      "Resources/font.ttf";                       //!< Path to font
   static constexpr unsigned kCharacterSize = 50;  //!< Character size
   inline static const sf::Color kTextColor =
       sf::Color{0, 0, 0};  //!< Color of the text

@@ -32,6 +32,7 @@ add_subdirectory(geometry)
 add_subdirectory(utils)
 add_subdirectory(plane)
 add_subdirectory(main)
+add_subdirectory(misc)
 
 # Aggregate all sources and configurations from subdirectories
 set(COMPLEX_SOLVER_SOURCES

@@ -10,7 +10,7 @@
 #include "utils/Matrix.h"
 
 namespace ComplexSolver {
-extern float CalculateSizeOfPixel(const sf::RenderTarget& target) {
+float CalculateSizeOfPixel(const sf::RenderTarget& target) {
   // Calculate position of pixel with coordinate (0, 0)
   const auto first_pixel_position = target.mapPixelToCoords({0, 0});
 
