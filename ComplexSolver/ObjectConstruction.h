@@ -27,7 +27,7 @@ class ConstructionPoint : public Construction {
    * \brief Default destructor.
    *
    */
-  ~ConstructionPoint() override = default;
+  ~ConstructionPoint() override;
 
   /**
    * \brief Gets object that is constructed.
@@ -67,7 +67,7 @@ class ConstructionPoint : public Construction {
    * \brief Default constructor.
    *
    */
-  ConstructionPoint() = default;
+  ConstructionPoint();
 
   /**
    * \brief Get equation of point.
@@ -84,8 +84,7 @@ class ConstructionPoint : public Construction {
   void SetEquation(PointEquation equation) const;
 
  private:
-  std::unique_ptr<Point> point_ =
-      std::make_unique<Point>();  //!< Point, which is created.
+  std::unique_ptr<Point> point_;  //!< Point, which is created.
 };
 
 /**
@@ -99,7 +98,7 @@ class ConstructionPoint : public Construction {
  *
  * \details Have no dependence on other objects
  */
-class PointOnPlane : public ConstructionPoint, public StrongConstruction {
+class PointOnPlane : public ConstructionPoint {
  public:
   /**
    * \brief Constructs point by equation
@@ -151,7 +150,7 @@ class ConstructionLine : public Construction {
   /**
    * \brief Default destructor.
    */
-  ~ConstructionLine() override = default;
+  ~ConstructionLine() override;
 
   /**
    * \brief Gets object that is constructed.
@@ -177,7 +176,7 @@ class ConstructionLine : public Construction {
   void Update(const ObjectEvent::Renamed& event) override;
 
  protected:
-  ConstructionLine() = default;
+  ConstructionLine();
 
   /**
    * \brief Get equation of line.
@@ -194,8 +193,7 @@ class ConstructionLine : public Construction {
   void SetEquation(const LineEquation& equation) const;
 
  private:
-  std::unique_ptr<Line> line_ =
-      std::make_unique<Line>();  //!< Line, which is created.
+  std::unique_ptr<Line> line_;  //!< Line, which is created.
 };
 
 /**
@@ -231,7 +229,7 @@ class LineOnPlane final : public ConstructionLine {
  *
  * \date July 2023
  */
-class ByTwoPoints final : public ConstructionLine, public StrongConstruction {
+class ByTwoPoints final : public ConstructionLine {
  public:
   /**
    * \brief Constructs line by two points.

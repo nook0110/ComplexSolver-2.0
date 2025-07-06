@@ -2,21 +2,6 @@
 #include "Observer.h"
 
 namespace ComplexSolver {
-
-/**
- * \brief Construction that does not lose its properties after projective
- * transformation.
- *
- * \author nook0110
- *
- * \version 0.1
- *
- * \date April 2023
- *
- * \see WeekTransformation
- */
-class StrongConstruction {};
-
 /**
  * \brief Defines how object is created.
  *

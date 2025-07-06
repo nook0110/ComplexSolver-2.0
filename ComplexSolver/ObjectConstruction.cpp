@@ -8,6 +8,8 @@
 #include "Matrix.h"
 
 namespace ComplexSolver {
+ConstructionPoint::~ConstructionPoint() = default;
+
 GeometricObject* ConstructionPoint::GetObject() const { return GetPoint(); }
 
 Point* ConstructionPoint::GetPoint() const {
@@ -28,6 +30,8 @@ void ConstructionPoint::Update(const ObjectEvent::GoingToBeDestroyed& event) {
 void ConstructionPoint::Update(const ObjectEvent::Renamed& renamed_event) {
   // Renaming has no effect on object
 }
+
+ConstructionPoint::ConstructionPoint() : point_(std::make_unique<Point>()) {}
 
 const PointEquation& ConstructionPoint::GetEquation() const {
   // Return point equationHomoGebra
@@ -55,6 +59,8 @@ GeometricObject* ConstructionLine::GetObject() const {
   return GetLine();
 }
 
+ConstructionLine::~ConstructionLine() = default;
+
 Line* ConstructionLine::GetLine() const {
   // Return line
   return line_.get();
@@ -73,6 +79,8 @@ void ConstructionLine::Update(const ObjectEvent::GoingToBeDestroyed& event) {
 }
 
 void ConstructionLine::Update(const ObjectEvent::Renamed& event) {}
+
+ConstructionLine::ConstructionLine() : line_(std::make_unique<Line>()) {}
 
 const LineEquation& ConstructionLine::GetEquation() const {
   // Return line equation
