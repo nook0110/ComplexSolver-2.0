@@ -27,6 +27,8 @@ class ObjectSelectorBody : public PlaneObserver {
    */
   explicit ObjectSelectorBody(Plane* plane);
 
+  ~ObjectSelectorBody() override;
+
   /**
    * \brief Draws the body of the ObjectSelector.
    *

@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 
+#include <iostream>
 #include <vector>
 
 #include "GuiUtilities.h"
@@ -13,6 +14,11 @@ template <class GeometricObjectType>
 ObjectSelectorBody<GeometricObjectType>::ObjectSelectorBody(Plane* plane)
     : plane_(plane), object_getter_(plane) {
   plane->Attach(this);
+}
+
+template <class GeometricObjectType>
+ObjectSelectorBody<GeometricObjectType>::~ObjectSelectorBody() {
+  plane_->Detach(this);
 }
 
 template <class GeometricObjectType>
