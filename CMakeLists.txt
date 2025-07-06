@@ -27,7 +27,7 @@ add_subdirectory(Thor)
 add_subdirectory(ComplexSolver)
 
 # Treat warnings as errors
-add_compile_options(-Werror)
+add_compile_options(-Wall -Werror)
 
 # Create executable using exported sources
 add_executable(Solver ${COMPLEX_SOLVER_SOURCES} )
