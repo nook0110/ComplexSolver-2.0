@@ -38,6 +38,7 @@ int main() {
 
   ComplexSolver::LineByTwoPointButton line_by_two_point_button{plane.get()};
   ComplexSolver::DeleteButton delete_button{plane.get()};
+  ComplexSolver::PointOnPlaneButton point_on_plane_button{plane.get()};
 
   ComplexSolver::EventConverter converter(&window);
   converter.Attach(plane.get());
@@ -83,7 +84,8 @@ int main() {
 
     line_by_two_point_button.Draw();
     delete_button.Draw();
-
+    point_on_plane_button.Draw();
+    
     ComplexSolver::Gui::Global::Render(window);
 
     window.display();

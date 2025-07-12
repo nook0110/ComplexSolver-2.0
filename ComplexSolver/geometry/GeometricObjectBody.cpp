@@ -10,7 +10,6 @@
 #include "SFML/Graphics/PrimitiveType.hpp"
 #include "SFML/Graphics/Vertex.hpp"
 #include "misc/Font.h"
-#include "utils/Matrix.h"
 
 namespace ComplexSolver {
 float CalculateSizeOfPixel(const sf::RenderTarget& target) {

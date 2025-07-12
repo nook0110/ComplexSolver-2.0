@@ -2,7 +2,9 @@
 #include <imgui.h>
 
 #include "ButtonImplementation.h"
+#include "utils/Indent.h"
 namespace ComplexSolver {
+
 /**
  * \brief Button.
  *
@@ -11,13 +13,13 @@ namespace ComplexSolver {
  *
  */
 template <class... Elements>
-class ButtonBase : public ButtonImplementation<Elements...> {
+class ButtonElement : public ButtonImplementation<Elements...> {
  public:
   /**
    * \brief Construct button for plane.
    *
    */
-  explicit ButtonBase(Plane* plane)
+  explicit ButtonElement(Plane* plane)
       : ButtonImplementation<Elements...>(plane) {}
 
   /**
@@ -25,18 +27,14 @@ class ButtonBase : public ButtonImplementation<Elements...> {
    *
    */
   void Draw() {
+    IndentGuard indent{};
     ButtonImplementation<Elements...>::Draw();
-    if (DrawApplyButton()) {
-      ButtonImplementation<Elements...>::PassArguments();
-    }
   }
 
- private:
-  /**
-   * \brief Draws the apply button.
-   *
-   * \return True if the apply button is pressed, false otherwise.
-   */
-  bool DrawApplyButton() { return ImGui::Button("Apply"); }
+  template <class... Args>
+  void operator()(Args&&... arguments) const {
+    ButtonImplementation<Elements...>::PassArguments(
+        std::forward<Args>(arguments)...);
+  }
 };
 }  // namespace ComplexSolver

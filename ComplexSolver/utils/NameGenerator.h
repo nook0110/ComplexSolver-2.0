@@ -1,6 +1,7 @@
 #pragma once
 #include <optional>
 #include <string>
+#include <string_view>
 
 #include "Dictionary.h"
 namespace ComplexSolver {
@@ -120,7 +121,7 @@ class NameGenerator {
    *
    * \return True if name was not used, false otherwise.
    */
-  bool AddName(const std::string& name);
+  bool AddName(std::string_view name);
   /**
    * \brief Add name to used names.
    *
@@ -137,7 +138,7 @@ class NameGenerator {
    *
    * \return True if name was deleted, false otherwise.
    */
-  bool DeleteName(const std::string& name);
+  bool DeleteName(std::string_view name);
   /**
    * \brief Deletes name from dictionary.
    *
@@ -154,7 +155,7 @@ class NameGenerator {
    *
    * \return True if name is used, false otherwise.
    */
-  [[nodiscard]] bool IsNameUsed(const std::string& name) const;
+  [[nodiscard]] bool IsNameUsed(std::string_view name) const;
 
   /**
    * \brief Checks if name is used.
@@ -173,7 +174,7 @@ class NameGenerator {
    *
    * \return True if name was renamed, false otherwise.
    */
-  bool Rename(const std::string& old_name, const std::string& new_name);
+  bool Rename(std::string_view old_name, std::string_view new_name);
 
   /**
    * \brief Renames name.
@@ -202,7 +203,7 @@ class NameGenerator {
    *
    * \return Adjusted name (to avoid duplicates).
    */
-  [[nodiscard]] ParsedName GenerateName(const std::string& name) const;
+  [[nodiscard]] ParsedName GenerateName(std::string_view name) const;
 
   /**
    * \brief Parses name.
@@ -211,7 +212,7 @@ class NameGenerator {
    *
    * \return Parsed name.
    */
-  static ParsedName ParseName(const std::string& name);
+  static ParsedName ParseName(std::string_view name);
   /**
    * \brief Parses subname.
    *
@@ -219,7 +220,7 @@ class NameGenerator {
    *
    * \return Parsed subname.
    */
-  static ParsedSubname ParseSubname(const std::string& subname);
+  static ParsedSubname ParseSubname(std::string_view subname);
 
  private:
   /**

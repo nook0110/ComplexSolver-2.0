@@ -1,10 +1,11 @@
 ﻿#include "GeometricObjectFactory.h"
+#include <string_view>
 
 #include "ObjectConstruction.h"
 #include "plane/Plane.h"
 
 namespace ComplexSolver {
-Point* PointOnPlaneFactory::operator()(PointEquation equation) const {
+Point* PointOnPlaneFactory::operator()(PointEquation equation, std::string_view name) const {
   // Create construction
   auto construction = std::make_unique<PointOnPlane>(std::move(equation));
 
@@ -16,7 +17,7 @@ Point* PointOnPlaneFactory::operator()(PointEquation equation) const {
   const auto& name_generator = plane_->GetNameGenerator();
 
   // Rename point
-  point->SetName(static_cast<std::string>(name_generator.GenerateName()));
+  point->SetName(static_cast<std::string>(name_generator.GenerateName(name)));
 
   // Return point
   return point;

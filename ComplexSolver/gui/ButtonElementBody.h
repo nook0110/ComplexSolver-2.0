@@ -18,7 +18,7 @@ class Plane;
  * object to be selected.
  */
 template <class GeometricObjectType>
-class ObjectSelectorBody : public PlaneObserver {
+class ObjectSelectorBody : public UniquePlaneObserver {
  public:
   /**
    * \brief Constructs an ObjectSelectorBody object.
@@ -89,9 +89,9 @@ class ObjectSelectorBody : public PlaneObserver {
   void DrawSetter();
 
   GeometricObjectType* object_{};
-  Plane* plane_;
   NearbyObjectGetter<GeometricObjectType> object_getter_;
 
   int current_object_ = -1;
 };
+
 }  // namespace ComplexSolver

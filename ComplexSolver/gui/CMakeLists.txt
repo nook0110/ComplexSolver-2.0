@@ -2,8 +2,11 @@
 file(GLOB GUI_SOURCES *.cpp)
 file(GLOB GUI_HEADERS *.h)
 
+add_subdirectory(elements)
+
 # Export variables to parent scope
-set(GUI_SOURCES ${GUI_SOURCES} PARENT_SCOPE)
+set(GUI_SOURCES ${GUI_SOURCES} 
+${GUI_ELEMENTS_SOURCES} PARENT_SCOPE)
 set(GUI_INCLUDE_DIRS 
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${IMGUI_DIR}

@@ -224,7 +224,29 @@ class PlaneObserver {
    *
    * \see ObjectEvent::Destroyed
    */
-  virtual void Update(const PlaneEvent::ObjectRemoved& object_removed) = 0;
+  virtual void Update(const PlaneEvent::ObjectRemoved& object_removed) {};
+};
+
+class UniquePlaneObserver : public PlaneObserver {
+ public:
+  /**
+   * \brief Default constructor.
+   *
+   */
+  UniquePlaneObserver(Plane* plane);
+
+  /**
+   * \brief Default destructor.
+   */
+  virtual ~UniquePlaneObserver();
+
+  UniquePlaneObserver(const UniquePlaneObserver&) = delete;
+  UniquePlaneObserver& operator=(const UniquePlaneObserver&) = delete;
+
+  Plane* GetPlane() const;
+
+ private:
+  Plane* plane_;
 };
 
 class ObservablePlane : public Observable<PlaneObserver> {

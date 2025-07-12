@@ -24,7 +24,7 @@ class PointOnPlaneFactory {
    *
    * \return Pointer to the constructed point.
    */
-  Point* operator()(PointEquation equation) const;
+  Point* operator()(PointEquation equation, std::string_view name = {}) const;
 
  private:
   Plane* plane_{};

@@ -58,10 +58,6 @@ class FactoryWrapper : public Factory {
    */
   template <class... Args>
   void operator()(Args&&... arguments) const {
-    if ((!arguments || ...)) {
-      return;
-    }
-
     Factory::operator()(std::forward<Args>(arguments)...);
   }
 

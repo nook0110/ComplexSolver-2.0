@@ -1,9 +1,11 @@
 #include "ButtonElementBody.h"
 
 #include <imgui.h>
+#include <misc/cpp/imgui_stdlib.h>
 
 #include <vector>
 
+#include "Assert.h"
 #include "GuiUtilities.h"
 #include "geometry/GeometricObject.h"
 #include "plane/Plane.h"
@@ -11,14 +13,10 @@
 namespace ComplexSolver {
 template <class GeometricObjectType>
 ObjectSelectorBody<GeometricObjectType>::ObjectSelectorBody(Plane* plane)
-    : plane_(plane), object_getter_(plane) {
-  plane->Attach(this);
-}
+    : UniquePlaneObserver(plane), object_getter_(plane) {}
 
 template <class GeometricObjectType>
-ObjectSelectorBody<GeometricObjectType>::~ObjectSelectorBody() {
-  plane_->Detach(this);
-}
+ObjectSelectorBody<GeometricObjectType>::~ObjectSelectorBody() = default;
 
 template <class GeometricObjectType>
 void ObjectSelectorBody<GeometricObjectType>::Draw() {
@@ -27,11 +25,20 @@ void ObjectSelectorBody<GeometricObjectType>::Draw() {
   // Draw which object is selected
   DrawName();
 
-  // Draw list of objects
-  DrawList();
+  // Get toggle state from ImGui storage
+  bool* showList = ImGui::GetStateStorage()->GetBoolRef(ImGui::GetID(this));
+  Assert(showList != nullptr, "showList is nullptr");
 
-  // Draw setter of object
-  DrawSetter();
+  if (ImGui::SmallButton(*showList ? "List" : "Setter")) {
+    *showList = !*showList;
+  }
+
+  // Draw either list or setter based on toggle state
+  if (*showList) {
+    DrawList();
+  } else {
+    DrawSetter();
+  }
 
   ImGui::PopID();
 }
@@ -76,7 +83,7 @@ template <class GeometricObjectType>
 void ObjectSelectorBody<GeometricObjectType>::DrawList() {
   // Get objects of type
   std::vector<GeometricObject*> objects =
-      plane_->GetObjects<GeometricObjectType>();
+      GetPlane()->template GetObjects<GeometricObjectType>();
 
   // Construct object selector
   if (ImGui::ListBox("Objects", &current_object_, ObjectsNameGetter, &objects,
@@ -114,4 +121,5 @@ void ObjectSelectorBody<GeometricObjectType>::DrawSetter() {
 template class ObjectSelectorBody<GeometricObject>;
 template class ObjectSelectorBody<Point>;
 template class ObjectSelectorBody<Line>;
+
 }  // namespace ComplexSolver

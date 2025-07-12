@@ -43,7 +43,7 @@ ParsedName::operator std::string() const {
          static_cast<std::string>(parsed_subname);
 }
 
-bool NameGenerator::AddName(const std::string& name) {
+bool NameGenerator::AddName(std::string_view name) {
   // Parse subname
   const auto parsed_name = ParseName(name);
 
@@ -58,7 +58,7 @@ bool NameGenerator::AddName(const ParsedName& name) {
   return used_names_.AddItem(name);
 }
 
-bool NameGenerator::DeleteName(const std::string& name) {
+bool NameGenerator::DeleteName(std::string_view name) {
   // Parse subname
   const auto parsed_name = ParseName(name);
 
@@ -72,7 +72,7 @@ bool NameGenerator::DeleteName(const ParsedName& name) {
   return used_names_.DeleteItem(name);
 }
 
-bool NameGenerator::IsNameUsed(const std::string& name) const {
+bool NameGenerator::IsNameUsed(std::string_view name) const {
   return IsNameUsed(ParseName(name));
 }
 
@@ -83,8 +83,8 @@ bool NameGenerator::IsNameUsed(const ParsedName& name) const {
   return used_names_.IsItemUsed(name);
 }
 
-bool NameGenerator::Rename(const std::string& old_name,
-                           const std::string& new_name) {
+bool NameGenerator::Rename(std::string_view old_name,
+                           std::string_view new_name) {
   return Rename(ParseName(old_name), ParseName(new_name));
 }
 
@@ -140,7 +140,7 @@ ParsedName NameGenerator::GenerateName() const {
       kAlphabet[std::distance(amount_of_uses.begin(), smallest_character)]});
 }
 
-ParsedName NameGenerator::GenerateName(const std::string& name) const {
+ParsedName NameGenerator::GenerateName(std::string_view name) const {
   auto parsed_name = ParseName(name);
 
   if (IsNameEmpty(parsed_name)) return GenerateName();
@@ -155,36 +155,35 @@ ParsedName NameGenerator::GenerateName(const std::string& name) const {
   return GenerateSubname(parsed_name);
 }
 
-ParsedName NameGenerator::ParseName(const std::string& name) {
+ParsedName NameGenerator::ParseName(std::string_view name) {
   // Find delimiter in subname
   const auto delimiter_position = name.find(kDelimiter);
-
-  // Check if subname does not contain delimiter
-  if (std::string::npos == delimiter_position) {
-    return ParsedName{name, ParsedSubname()};
+  if (delimiter_position == std::string_view::npos) {
+    return ParsedName{std::string{name}, ParsedSubname()};
   }
 
   // Parse subname
   const auto parsed_name = name.substr(0, delimiter_position);
   const auto unparsed_subname = name.substr(delimiter_position + 1);
 
+
   // Parse subname
   const auto parsed_subname = ParseSubname(unparsed_subname);
 
-  return {parsed_name, parsed_subname};
+  return {std::string{parsed_name}, parsed_subname};
 }
 
-ParsedSubname NameGenerator::ParseSubname(const std::string& subname) {
+ParsedSubname NameGenerator::ParseSubname(std::string_view subname) {
   {
     // Check if subname consists only of characters
     if (std::ranges::all_of(subname, [](char c) { return !std::isdigit(c); })) {
-      return {subname, {std::nullopt}};
+      return {std::string(subname), {std::nullopt}};
     }
 
     // Check if subname consists only of digits
     if (std::ranges::all_of(subname,
                             [](const char c) { return std::isdigit(c); })) {
-      return {{}, {std::stoull(subname)}};
+      return {{}, {std::stoull(std::string(subname))}};
     }
 
     const auto position_of_number =
@@ -198,7 +197,7 @@ ParsedSubname NameGenerator::ParseSubname(const std::string& subname) {
 
     // Get number
     const auto number =
-        std::stoull(std::string(position_of_number, subname.end()));
+        std::stoull(std::string(subname.substr(position_of_number - subname.begin())));
 
     return {name_without_number, {number}};
   }

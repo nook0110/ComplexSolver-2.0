@@ -5,15 +5,14 @@ namespace ComplexSolver {
 class Plane;
 
 template <class T>
-concept ButtonElement = requires(T button_part) {
-  {T{static_cast<Plane*>(nullptr)}};
-}
-&&requires(const T button_part) { {button_part()}; };
+concept ButtonElementConcept = requires(T button_part) {
+  { T{static_cast<Plane*>(nullptr)} };
+} && requires(const T button_part) {
+  { button_part() };
+};
 
 template <class T>
-concept HasDraw = requires(T t) {
-  t.Draw();
-};
+concept HasDraw = requires(T t) { t.Draw(); };
 
 /**
  * \brief Wrapper of element
@@ -45,7 +44,7 @@ struct Wrapper : Element {
  *
  * \date July 2023
  */
-template <ButtonElement First, class... Rest>
+template <ButtonElementConcept First, class... Rest>
 class ButtonImplementation : public Wrapper<First, sizeof...(Rest)>,
                              public ButtonImplementation<Rest...> {
  public:
@@ -74,7 +73,7 @@ class ButtonImplementation : public Wrapper<First, sizeof...(Rest)>,
    * \param arguments Already received arguments.
    */
   template <class... Args>
-  void PassArguments(Args&&... arguments);
+  void PassArguments(Args&&... arguments) const;
 };
 
 /**
@@ -90,7 +89,7 @@ class ButtonImplementation : public Wrapper<First, sizeof...(Rest)>,
  *
  * \date July 2023
  */
-template <ButtonElement First>
+template <ButtonElementConcept First>
 class ButtonImplementation<First> : public Wrapper<First, 0> {
  public:
   /**
@@ -113,20 +112,21 @@ class ButtonImplementation<First> : public Wrapper<First, 0> {
    * \param arguments Already received arguments.
    */
   template <class... Args>
-  void PassArguments(Args&&... arguments);
+  void PassArguments(Args&&... arguments) const;
 };
 
-template <ButtonElement First, class... Rest>
+template <ButtonElementConcept First, class... Rest>
 template <class... Args>
-void ButtonImplementation<First, Rest...>::PassArguments(Args&&... arguments) {
+void ButtonImplementation<First, Rest...>::PassArguments(
+    Args&&... arguments) const {
   ButtonImplementation<Rest...>::PassArguments(
       std::forward<Args>(arguments)...,
       Wrapper<First, sizeof...(Rest)>::operator()());
 }
 
-template <ButtonElement First>
+template <ButtonElementConcept First>
 template <class... Args>
-void ButtonImplementation<First>::PassArguments(Args&&... arguments) {
+void ButtonImplementation<First>::PassArguments(Args&&... arguments) const {
   Wrapper<First, 0>::operator()(std::forward<Args>(arguments)...);
 }
 }  // namespace ComplexSolver

@@ -1,7 +1,11 @@
 #pragma once
 #include "Button.h"
-#include "ButtonElement.h"
+#include "Equation.h"
+#include "PointEquationElement.h"
+#include "elements/ObjectSelector.h"
+#include "geometry/GeometricObject.h"
 #include "geometry/GeometricObjectFactory.h"
+#include "gui/TextInputElement.h"
 #include "imgui.h"
 
 namespace ComplexSolver {
@@ -29,13 +33,56 @@ class WindowButton : public ButtonClass {
    * @brief Draws the button inside an ImGui window.
    */
   void Draw() {
-    ImGui::Begin(name_.data());
+    ImGui::Begin(name_.data(), nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     ButtonClass::Draw();
     ImGui::End();
   }
 
  private:
   std::string name_; /**< The name of the button. */
+};
+
+template <class Button>
+class ApplyButton : public Button {
+ public:
+  /**
+   * \brief Construct button for plane.
+   *
+   */
+  explicit ApplyButton(Plane* plane) : Button(plane) {}
+
+  /**
+   * \brief Draws button.
+   *
+   */
+  void Draw() {
+    Button::Draw();
+    if (DrawApplyButton()) {
+      Button::operator()();
+    }
+  }
+
+ private:
+  /**
+   * \brief Draws the apply button.
+   *
+   * \return True if the apply button is pressed, false otherwise.
+   */
+  bool DrawApplyButton() { return ImGui::Button("Apply"); }
+};
+
+class PointOnPlaneButton final
+    : public WindowButton<
+          ApplyButton<ButtonElement<PointEquationElement, TextInputElement,
+                                    FactoryWrapper<PointOnPlaneFactory>>>> {
+ public:
+  /**
+   * @brief Constructs a new PointOnPlaneButton object.
+   *
+   * @param plane The plane associated with the button.
+   */
+  explicit PointOnPlaneButton(Plane* plane)
+      : WindowButton("Point on plane", plane) {}
 };
 
 /**class Li
@@ -47,9 +94,9 @@ class WindowButton : public ButtonClass {
  * plane.
  */
 class LineByTwoPointButton final
-    : public WindowButton<
-          ButtonBase<ObjectSelector<Point>, ObjectSelector<Point>,
-                     FactoryWrapper<LineByTwoPointsFactory>>> {
+    : public WindowButton<ApplyButton<ButtonElement<
+          ButtonElement<ObjectSelector<Point>, ObjectSelector<Point>,
+                        FactoryWrapper<LineByTwoPointsFactory>>>>> {
  public:
   /**
    * @brief Constructs a new LineByTwoPointButton object.
@@ -67,8 +114,8 @@ class LineByTwoPointButton final
  * It provides functionality to delete a selected geometric object.
  */
 class DeleteButton final
-    : public WindowButton<
-          ButtonBase<ObjectSelector<GeometricObject>, Deleter>> {
+    : public WindowButton<ApplyButton<
+          ButtonElement<ObjectSelector<GeometricObject>, Deleter>>> {
  public:
   /**
    * @brief Constructs a new DeleteButton object.

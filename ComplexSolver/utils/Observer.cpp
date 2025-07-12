@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "plane/Plane.h"
+
 namespace ComplexSolver {
 template <class Observer>
 void Observable<Observer>::Attach(Observer* observer) {
@@ -48,4 +50,12 @@ template void ObservablePlane::Notify<PlaneEvent::ObjectRemoved>(
 
 template class Observable<GeometricObjectObserver>;
 template class Observable<PlaneObserver>;
+
+UniquePlaneObserver::UniquePlaneObserver(Plane* plane) : plane_(plane) {
+  plane_->Attach(this);
+}
+
+UniquePlaneObserver::~UniquePlaneObserver() { plane_->Detach(this); }
+
+Plane* UniquePlaneObserver::GetPlane() const { return plane_; }
 }  // namespace ComplexSolver
