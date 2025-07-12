@@ -1,7 +1,7 @@
 ﻿#include "PlaneImplementation.h"
 
-#include "Assert.h"
-#include "Construction.h"
+#include "core/Assert.h"
+#include "core/Construction.h"
 #include "geometry/GeometricObject.h"
 
 namespace ComplexSolver {

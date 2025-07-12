@@ -1,10 +1,11 @@
-# GUI components configuration
+# GUI Elements library configuration
 file(GLOB GUI_ELEMENTS_SOURCES *.cpp)
 file(GLOB GUI_ELEMENTS_HEADERS *.h)
 
-# Export variables to parent scope
-set(GUI_ELEMENTS_SOURCES ${GUI_ELEMENTS_SOURCES} PARENT_SCOPE)
-set(GUI_ELEMENTS_INCLUDE_DIRS 
-    ${IMGUI_DIR}
-    PARENT_SCOPE)
-set(GUI_ELEMENTS_LIBRARIES "" PARENT_SCOPE)
+# Create GUI Elements library
+add_library(ComplexSolverGuiElements STATIC ${GUI_ELEMENTS_SOURCES} ${GUI_ELEMENTS_HEADERS})
+
+# Set include directories
+target_include_directories(ComplexSolverGuiElements PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)

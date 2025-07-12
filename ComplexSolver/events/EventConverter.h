@@ -1,6 +1,6 @@
 #pragma once
-#include <SFML/Graphics/RenderWindow.hpp>
 #include <Thor/Input.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 #include "EventNotifier.h"
 

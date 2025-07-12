@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "Equation.h"
+#include "core/Equation.h"
 #include "GeometricObjectImplementation.h"
 
 namespace ComplexSolver {

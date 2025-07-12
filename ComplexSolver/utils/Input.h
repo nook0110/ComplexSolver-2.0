@@ -1,5 +1,5 @@
 #pragma once
-#include "EventNotifier.h"
+#include "events/EventNotifier.h"
 #include "geometry/ObjectProvider.h"
 
 namespace ComplexSolver {

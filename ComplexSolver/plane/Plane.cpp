@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "Construction.h"
+#include "core/Construction.h"
 #include "geometry/GeometricObject.h"
 
 namespace ComplexSolver {

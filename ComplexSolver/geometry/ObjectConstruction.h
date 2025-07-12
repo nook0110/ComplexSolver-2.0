@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "Construction.h"
-#include "Equation.h"
+#include "core/Construction.h"
+#include "core/Equation.h"
 
 namespace ComplexSolver {
 class GeometricObject;

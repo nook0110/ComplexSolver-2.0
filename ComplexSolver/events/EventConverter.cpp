@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#include "Assert.h"
+#include "core/Assert.h"
 namespace ComplexSolver {
 EventConverter::EventConverter(sf::RenderWindow* window) : window_(window) {
   InitActionMap();

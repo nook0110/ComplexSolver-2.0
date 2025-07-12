@@ -4,7 +4,7 @@
 #include <random>
 #include <utility>
 
-#include "Assert.h"
+#include "core/Assert.h"
 #include "GeometricObject.h"
 #include "utils/Matrix.h"
 

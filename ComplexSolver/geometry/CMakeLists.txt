@@ -1,10 +1,20 @@
-# Geometry components configuration
+# Geometry library configuration
 file(GLOB GEOMETRY_SOURCES *.cpp)
 file(GLOB GEOMETRY_HEADERS *.h)
 
-# Export variables to parent scope
-set(GEOMETRY_SOURCES ${GEOMETRY_SOURCES} PARENT_SCOPE)
-set(GEOMETRY_INCLUDE_DIRS 
+# Create Geometry library
+add_library(ComplexSolverGeometry STATIC ${GEOMETRY_SOURCES} ${GEOMETRY_HEADERS})
+
+target_link_libraries(ComplexSolverGeometry PUBLIC
+    ComplexSolverObserver
+    ComplexSolverCore
+)
+
+# Set include directories
+target_include_directories(ComplexSolverGeometry PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
-    PARENT_SCOPE)
-set(GEOMETRY_LIBRARIES "" PARENT_SCOPE)
+    ${OPENGL_INCLUDE_DIRS}
+)
+
+# Export target for parent scope
+set(GEOMETRY_LIBRARY ComplexSolverGeometry PARENT_SCOPE)

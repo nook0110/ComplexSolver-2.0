@@ -2,9 +2,9 @@
 #include <cstdlib>
 #include <memory>
 
-#include "ButtonsImplementations.h"
-#include "EventConverter.h"
-#include "Gui.h"
+#include "gui/ButtonsImplementations.h"
+#include "events/EventConverter.h"
+#include "gui/Gui.h"
 #include "geometry/GeometricObject.h"
 #include "geometry/GeometricObjectFactory.h"
 #include "imgui-SFML.h"
@@ -85,7 +85,7 @@ int main() {
     line_by_two_point_button.Draw();
     delete_button.Draw();
     point_on_plane_button.Draw();
-    
+
     ComplexSolver::Gui::Global::Render(window);
 
     window.display();

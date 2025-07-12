@@ -1,9 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-#include "EventNotifier.h"
 #include "PlaneImplementation.h"
-#include "utils/Observer.h"
+#include "events/EventNotifier.h"
+#include "observer/Observer.h"
 
 namespace ComplexSolver {
 class Construction;

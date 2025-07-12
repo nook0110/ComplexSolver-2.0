@@ -1,6 +1,6 @@
 #pragma once
-#include "Assert.h"
-#include "ButtonElementBody.h"
+#include "core/Assert.h"
+#include "gui/ButtonElementBody.h"
 #include "plane/Plane.h"
 
 namespace ComplexSolver {

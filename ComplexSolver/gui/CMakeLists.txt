@@ -1,14 +1,18 @@
-# GUI components configuration
+# GUI library configuration
 file(GLOB GUI_SOURCES *.cpp)
 file(GLOB GUI_HEADERS *.h)
 
+# Create GUI library
+add_library(ComplexSolverGui STATIC ${GUI_SOURCES} ${GUI_HEADERS})
+
+target_link_libraries(ComplexSolverGui PUBLIC
+    ComplexSolverObserver
+)
+
+# Include elements subdirectory (will create its own target)
 add_subdirectory(elements)
 
-# Export variables to parent scope
-set(GUI_SOURCES ${GUI_SOURCES} 
-${GUI_ELEMENTS_SOURCES} PARENT_SCOPE)
-set(GUI_INCLUDE_DIRS 
+# Set include directories
+target_include_directories(ComplexSolverGui PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${IMGUI_DIR}
-    PARENT_SCOPE)
-set(GUI_LIBRARIES "" PARENT_SCOPE)
+)

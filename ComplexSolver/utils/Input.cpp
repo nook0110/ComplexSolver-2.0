@@ -1,6 +1,7 @@
 #include "Input.h"
 
 #include "geometry/GeometricObject.h"
+#include "geometry/ObjectProvider.h"
 #include "plane/Plane.h"
 
 namespace ComplexSolver {

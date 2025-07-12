@@ -1,6 +1,6 @@
 #pragma once
+#include "observer/Observer.h"
 #include "utils/Input.h"
-#include "utils/Observer.h"
 
 namespace ComplexSolver {
 class Plane;

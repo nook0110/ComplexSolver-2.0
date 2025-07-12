@@ -5,7 +5,7 @@
 
 #include <vector>
 
-#include "Assert.h"
+#include "core/Assert.h"
 #include "GuiUtilities.h"
 #include "geometry/GeometricObject.h"
 #include "plane/Plane.h"

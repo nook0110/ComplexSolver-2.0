@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
 
-#include "Construction.h"
-#include "Equation.h"
-#include "utils/Observer.h"
+#include "core/Construction.h"
+#include "core/Equation.h"
+#include "observer/Observer.h"
 
 class GeometricObject;
 

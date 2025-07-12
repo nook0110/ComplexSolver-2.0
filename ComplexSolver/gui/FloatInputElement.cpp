@@ -1,4 +1,4 @@
-#include "gui/FloatInputElement.h"
+#include "FloatInputElement.h"
 
 #include <imgui.h>
 

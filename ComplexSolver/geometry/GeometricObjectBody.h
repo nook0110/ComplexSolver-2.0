@@ -2,9 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "DistanceUtilities.h"
-#include "Equation.h"
-#include "Var.h"
+#include "core/DistanceUtilities.h"
+#include "core/Equation.h"
+#include "core/Var.h"
 
 namespace ComplexSolver {
 /**

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gui/ButtonElementBody.h"
-#include "utils/Observer.h"
+#include "observer/Observer.h"
 
 namespace ComplexSolver {
 

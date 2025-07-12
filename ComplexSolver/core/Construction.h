@@ -1,5 +1,5 @@
 #pragma once
-#include "utils/Observer.h"
+#include "observer/Observer.h"
 
 namespace ComplexSolver {
 /**
