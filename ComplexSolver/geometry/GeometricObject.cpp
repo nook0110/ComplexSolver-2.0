@@ -2,11 +2,12 @@
 
 #include <utility>
 
-#include "core/Equation.h"
+#include "Equation.h"
+#include "GeometricObjectBody.h"
 #include "GeometricObjectImplementation.h"
 
 namespace ComplexSolver {
-Point::Point(PointEquation equation) : implementation_(std::move(equation)) {}
+Point::Point(PointEquation equation) : body_(std::move(equation)) {}
 
 void Point::AlertDestruction() const {
   // Notify observers that object was destroyed
@@ -27,12 +28,12 @@ template void Point::Notify<ObjectEvent::Renamed>(
 
 void Point::SetEquation(PointEquation equation) {
   // Set equation in implementation
-  implementation_.SetEquation(std::move(equation));
+  body_.SetEquation(std::move(equation));
 }
 
 const PointEquation& Point::GetEquation() const {
   // Return equation
-  return implementation_.GetEquation();
+  return body_.GetEquation();
 }
 
 Distance Point::GetDistance(const sf::Vector2f& position) const {
@@ -50,7 +51,7 @@ void Point::Detach(const GeometricObjectObserver* observer) {
 
 void Point::UpdateBody(const sf::RenderTarget& target) {
   // Update body
-  body_.Update(target, implementation_.GetEquation());
+  body_.Update(target);
 }
 
 void Point::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -73,7 +74,7 @@ const std::string& Point::GetName() const {
   return body_.GetName();
 }
 
-Line::Line(LineEquation equation) : implementation_(std::move(equation)) {}
+Line::Line(LineEquation equation) : body_(std::move(equation)) {}
 
 void Line::AlertDestruction() const {
   // Notify observers that object was destroyed
@@ -82,17 +83,17 @@ void Line::AlertDestruction() const {
 
 void Line::SetEquation(LineEquation equation) {
   // Set equation in implementation
-  implementation_.SetEquation(std::move(equation));
+  body_.SetEquation(std::move(equation));
 }
 
 const LineEquation& Line::GetEquation() const {
   // Return equation
-  return implementation_.GetEquation();
+  return body_.GetEquation();
 }
 
 void Line::UpdateBody(const sf::RenderTarget& target) {
   // Update body
-  body_.Update(implementation_.GetEquation());
+  body_.Update(target);
 }
 
 void Line::draw(sf::RenderTarget& target, sf::RenderStates states) const {

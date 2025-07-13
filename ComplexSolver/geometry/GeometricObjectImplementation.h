@@ -2,7 +2,6 @@
 #include <memory>
 
 #include "core/Construction.h"
-#include "core/Equation.h"
 #include "observer/Observer.h"
 
 class GeometricObject;
@@ -45,35 +44,7 @@ class GeometricObjectImplementation : public ObservableGeometricObject {
  *
  * \see Point
  */
-class PointImplementation final : public GeometricObjectImplementation {
- public:
-  /**
-   * \brief Construct a point with given equation.
-   *
-   * \param equation Equation of point.
-   */
-  explicit PointImplementation(PointEquation equation = PointEquation());
-
-  /**
-   * \brief Sets new equation of point.
-   *
-   * \param equation Equation of point.
-   */
-  void SetEquation(PointEquation equation);
-
-  /**
-   * \brief Return current equation of point.
-   *
-   * \return Point equation.
-   */
-  [[nodiscard]] const PointEquation& GetEquation() const;
-
- private:
-  /**
-   * Member data.
-   */
-  PointEquation equation_;  //!< Point equation.
-};
+class PointImplementation final : public GeometricObjectImplementation {};
 
 /**
  * \brief Implementation of Line
@@ -86,33 +57,5 @@ class PointImplementation final : public GeometricObjectImplementation {
  *
  * \see Line
  */
-class LineImplementation : public GeometricObjectImplementation {
- public:
-  /**
-   * \brief Construct a line with given equation.
-   *
-   * \param equation Equation of line.
-   */
-  explicit LineImplementation(LineEquation equation = LineEquation());
-
-  /**
-   * \brief Sets new equation of line.
-   *
-   * \param equation Equation of line.
-   */
-  void SetEquation(LineEquation equation);
-
-  /**
-   * \brief Return equation of line.
-   *
-   * \return Line equation.
-   */
-  [[nodiscard]] const LineEquation& GetEquation() const;
-
- private:
-  /**
-   * Member data.
-   */
-  LineEquation equation_;  //!< Line equation.
-};
+class LineImplementation : public GeometricObjectImplementation {};
 }  // namespace ComplexSolver

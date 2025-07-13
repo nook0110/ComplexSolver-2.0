@@ -1,5 +1,5 @@
 #pragma once
-#include "core/DistanceUtilities.h"
+#include "DistanceUtilities.h"
 
 namespace ComplexSolver {
 class Plane;

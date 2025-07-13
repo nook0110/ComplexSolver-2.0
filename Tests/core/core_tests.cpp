@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
-#include <core/Equation.h>
 
-TEST(CoreTests, EquationBasicTest) {
+TEST(CoreTests, CoreBasicTest) {
     // TODO: Implement actual tests
     EXPECT_TRUE(true);
 }

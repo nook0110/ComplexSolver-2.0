@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "core/Construction.h"
-#include "core/Equation.h"
+#include "Equation.h"
 
 namespace ComplexSolver {
 class GeometricObject;

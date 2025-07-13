@@ -1,10 +1,8 @@
 #pragma once
 
-#include <utility>
-
 #include <cassert>
 
-#include "Assert.h"
+#include "core/Assert.h"
 #include "Var.h"
 
 namespace ComplexSolver {

@@ -1,11 +1,11 @@
 ﻿#pragma once
 
 #include <SFML/Graphics.hpp>
-#include <optional>
+#include <array>
 
-#include "core/DistanceUtilities.h"
-#include "core/Equation.h"
-#include "core/Var.h"
+#include "DistanceUtilities.h"
+#include "Equation.h"
+#include "SFML/Graphics/RenderTarget.hpp"
 
 namespace ComplexSolver {
 /**
@@ -145,7 +145,7 @@ class PointBody final : public ObjectBody {
    * \brief Default constructor.
    *
    */
-  PointBody();
+  explicit PointBody(PointEquation equation);
 
   /**
    * \brief Destructor.
@@ -159,7 +159,11 @@ class PointBody final : public ObjectBody {
    * \param equation Equation of the point.
    * \param size Size of the point.
    */
-  void Update(const sf::RenderTarget& target, const PointEquation& equation);
+  void Update(const sf::RenderTarget& target);
+
+  void SetEquation(PointEquation equation);
+
+  const PointEquation& GetEquation() const;
 
   /**
    * \brief Draw the point to a render target.
@@ -170,33 +174,6 @@ class PointBody final : public ObjectBody {
   void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
   Distance GetDistance(const sf::Vector2f& position) const override;
-
- private:
-  /**
-   * Member data.
-   */
-
-  /**
-   * \brief Projective position of the point.
-   *
-   * \author nook0110
-   *
-   * \version 1.0
-   *
-   * \date February 2023
-   */
-  struct Position {
-    sf::Vector2f position;  //!< Position of the point.
-  };
-
-  /**
-   * \brief Calculates the projective position of the point.
-   *
-   * \param equation Equation of the point.
-   *
-   * \return Projective position of the point.
-   */
-  static Position CalculatePosition(const PointEquation& equation);
 
   /**
    * \brief Calculates size of a body
@@ -209,8 +186,13 @@ class PointBody final : public ObjectBody {
    */
   static float CalculateSizeOfBody(const sf::RenderTarget& target);
 
-  Position position_;     //!< Projective position of the point.
-  sf::CircleShape body_;  //!< Body of the point.
+ private:
+  /**
+   * Member data.
+   */
+
+  PointEquation equation_;  //!< Projective position of the point.
+  sf::CircleShape body_;    //!< Body of the point.
 };
 
 /**
@@ -228,7 +210,7 @@ class LineBody final : public ObjectBody {
    * \brief Default constructor.
    *
    */
-  LineBody() = default;
+  explicit LineBody(LineEquation equation);
 
   /**
    * \brief Destructor.
@@ -241,7 +223,11 @@ class LineBody final : public ObjectBody {
    *
    * \param equation Equation of the line.
    */
-  void Update(const LineEquation& equation);
+  void Update(const sf::RenderTarget& target);
+
+  void SetEquation(LineEquation equation);
+
+  const LineEquation& GetEquation() const;
 
   /**
    * \brief Draw line to a render target.
@@ -252,36 +238,6 @@ class LineBody final : public ObjectBody {
   void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
   Distance GetDistance(const sf::Vector2f& position) const override;
-
- private:
-  /**
-   * \brief Equation of a line.
-   *
-   * \author nook0110
-   *
-   * \version 1.0
-   *
-   * \date July 2023
-   */
-  struct Equation {
-    /*
-     * Line equation:
-     * a*x + b*y + c = 0
-     */
-    float a;  //!< Coefficient of x.
-    float b;  //!< Coefficient of y.
-    float c;  //!< Constant.
-
-    /**
-     * \brief Solve the equation for a variable.
-     *
-     * \param var Variable to solve for.
-     * \param another Another variable value.
-     *
-     * \return Value of the variable.
-     */
-    [[nodiscard]] float Solve(Var var, float another) const;
-  };
 
   /**
    * \brief Calculates size of a body
@@ -294,6 +250,8 @@ class LineBody final : public ObjectBody {
    */
   static float CalculateSizeOfBody(const sf::RenderTarget& target);
 
-  std::optional<Equation> equation_;  //!< Equation of the line.
+ private:
+  LineEquation line_equation_;
+  std::array<sf::Vertex, 4> line_body_;
 };
 }  // namespace ComplexSolver

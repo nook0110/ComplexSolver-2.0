@@ -6,9 +6,13 @@
 #include <numbers>
 #include <utility>
 
-#include "core/Assert.h"
+#include "Equation.h"
+#include "GeometricObject.h"
 #include "SFML/Graphics/PrimitiveType.hpp"
+#include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/Vertex.hpp"
+#include "SFML/System/Vector2.hpp"
+#include "core/Assert.h"
 #include "misc/Font.h"
 
 namespace ComplexSolver {
@@ -91,19 +95,19 @@ void ObjectBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   target.draw(text_, states);
 }
 
-PointBody::PointBody() { body_.setFillColor(sf::Color::Red); }
+PointBody::PointBody(PointEquation equation) : equation_(std::move(equation)) {
+  body_.setFillColor(sf::Color::Red);
+}
 
-void PointBody::Update(const sf::RenderTarget& target,
-                       const PointEquation& equation) {
+void PointBody::Update(const sf::RenderTarget& target) {
   // Calculate position
-  position_ = CalculatePosition(equation);
-  body_.setPosition(position_.position);
-  SetNamePosition(position_.position);
-
-  // Calculate size of body
-  const auto size = CalculateSizeOfBody(target);
+  sf::Vector2f position = {equation_.GetEquation().x,
+                           equation_.GetEquation().y};
+  body_.setPosition(position);
+  SetNamePosition(position);
 
   // Set size
+  auto size = CalculateSizeOfBody(target);
   constexpr auto kTextFactor = 2.f;
   SetNameSize(size * kTextFactor);
 
@@ -112,6 +116,12 @@ void PointBody::Update(const sf::RenderTarget& target,
   body_.setOrigin(size, size);
 }
 
+void PointBody::SetEquation(PointEquation equation) {
+  equation_ = std::move(equation);
+}
+
+const PointEquation& PointBody::GetEquation() const { return equation_; }
+
 void PointBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
   // Draw point
   target.draw(body_, states);
@@ -119,15 +129,9 @@ void PointBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 }
 
 Distance PointBody::GetDistance(const sf::Vector2f& position) const {
-  return Length(position_.position - position);
-}
-
-PointBody::Position PointBody::CalculatePosition(
-    const PointEquation& equation) {
-  // Get equation
-  const auto& eq = equation.GetEquation();
-
-  return Position{{eq.x, eq.y}};
+  sf::Vector2f point_position = {equation_.GetEquation().x,
+                                 equation_.GetEquation().y};
+  return Length(point_position - position);
 }
 
 float PointBody::CalculateSizeOfBody(const sf::RenderTarget& target) {
@@ -144,54 +148,14 @@ float PointBody::CalculateSizeOfBody(const sf::RenderTarget& target) {
   return size;
 }
 
-void LineBody::Update(const LineEquation& line_equation) {
-  // Normalize equation
-  const auto& equation = line_equation.GetEquation();
+LineBody::LineBody(LineEquation equation)
+    : line_equation_(std::move(equation)) {}
 
-  // Set equation
-  Equation body_equation{equation.A, equation.B, equation.C};
-
-  equation_ = body_equation;
-}
-
-static void DrawThickLine(sf::RenderTarget& target,
-                          const std::array<sf::Vertex, 2>& vertices,
-                          float thickness) {
-  std::array<sf::Vertex, 4> vertices_with_thickness;
-
-  const auto& first = vertices[0];
-  const auto& second = vertices[1];
-
-  const auto direction = second.position - first.position;
-  const auto normal = sf::Vector2f(-direction.y, direction.x);
-  const auto normalized_normal = normal / std::hypot(normal.x, normal.y);
-
-  const auto half_thickness = thickness / 2.f;
-  const auto first_vertex = first.position + normalized_normal * half_thickness;
-  const auto second_vertex =
-      second.position + normalized_normal * half_thickness;
-  const auto third_vertex =
-      second.position - normalized_normal * half_thickness;
-  const auto fourth_vertex =
-      first.position - normalized_normal * half_thickness;
-
-  vertices_with_thickness[0] = sf::Vertex(first_vertex, first.color);
-  vertices_with_thickness[1] = sf::Vertex(second_vertex, first.color);
-  vertices_with_thickness[2] = sf::Vertex(third_vertex, second.color);
-  vertices_with_thickness[3] = sf::Vertex(fourth_vertex, second.color);
-
-  target.draw(vertices_with_thickness.data(), vertices_with_thickness.size(),
-              sf::Quads);  // Draw the thick line
-}
-
-void LineBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-  // Check ig line is in 'real' plane
-  if (!equation_) {
-    return;
-  }
-  const auto& a = equation_.value().a;
-  const auto& b = equation_.value().b;
-  const auto& c = equation_.value().c;
+std::array<sf::Vertex, 2> static GenerateIntersectionWithWindow(
+    const sf::RenderTarget& target, const LineEquation& equation) {
+  const auto& a = equation.GetEquation().A;
+  const auto& b = equation.GetEquation().B;
+  const auto& c = equation.GetEquation().C;
 
   const auto& center = target.getView().getCenter();
   const auto& size = target.getView().getSize();
@@ -226,27 +190,57 @@ void LineBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
         -(line_vertices[second].position.x * a + c) / b;
   }
 
-  DrawThickLine(target, line_vertices, CalculateSizeOfBody(target));
+  return line_vertices;
+}
+
+static std::array<sf::Vertex, 4> GenerateThickLine(
+    const std::array<sf::Vertex, 2>& line_vertices, const float thickness) {
+  std::array<sf::Vertex, 4> vertices_with_thickness;
+
+  const auto& first = line_vertices[0];
+  const auto& second = line_vertices[1];
+
+  const auto direction = second.position - first.position;
+  const auto normal = sf::Vector2f(-direction.y, direction.x);
+  const auto normalized_normal = normal / std::hypot(normal.x, normal.y);
+
+  const auto half_thickness = thickness / 2.f;
+  const auto first_vertex = first.position + normalized_normal * half_thickness;
+  const auto second_vertex =
+      second.position + normalized_normal * half_thickness;
+  const auto third_vertex =
+      second.position - normalized_normal * half_thickness;
+  const auto fourth_vertex =
+      first.position - normalized_normal * half_thickness;
+
+  vertices_with_thickness[0] = sf::Vertex(first_vertex, first.color);
+  vertices_with_thickness[1] = sf::Vertex(second_vertex, first.color);
+  vertices_with_thickness[2] = sf::Vertex(third_vertex, second.color);
+  vertices_with_thickness[3] = sf::Vertex(fourth_vertex, second.color);
+
+  return vertices_with_thickness;
+}
+
+void LineBody::Update(const sf::RenderTarget& target) {
+  auto line_vertices = GenerateIntersectionWithWindow(target, line_equation_);
+
+  line_body_ = GenerateThickLine(line_vertices, CalculateSizeOfBody(target));
+}
+
+void LineBody::SetEquation(LineEquation equation) {
+  line_equation_ = std::move(equation);
+}
+
+const LineEquation& LineBody::GetEquation() const { return line_equation_; }
+
+void LineBody::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+  target.draw(line_body_.data(), line_body_.size(), sf::Quads);
 }
 
 Distance LineBody::GetDistance(const sf::Vector2f& position) const {
-  if (!equation_) return std::numeric_limits<Distance>::max();
-
-  const auto& [a, b, c] = equation_.value();
+  const auto& [a, b, c] = line_equation_.GetEquation();
 
   return DistanceToLine(position, a, b, c);
-}
-
-float LineBody::Equation::Solve(const Var var, const float another) const {
-  switch (var) {
-    case Var::kX:
-      return (-c - b * another) / a;
-    case Var::kY:
-      return (-c - a * another) / b;
-    default:
-      Assert(false, "Invalid variable");
-  }
-  return float{};
 }
 
 float LineBody::CalculateSizeOfBody(const sf::RenderTarget& target) {

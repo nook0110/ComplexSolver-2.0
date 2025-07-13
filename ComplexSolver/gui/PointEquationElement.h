@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Equation.h"
+#include "geometry/Equation.h"
 #include "gui/FloatInputElement.h"
 #include "observer/Observer.h"
 
