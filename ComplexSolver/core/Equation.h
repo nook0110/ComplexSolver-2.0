@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include <cassert>
+
 #include "Assert.h"
 #include "Var.h"
 
@@ -33,7 +35,7 @@ class PointEquation {
           return y;
       }
       Assert(false, "Invalid variable");
-      std::unreachable();
+      assert(false);
     }
     const float& operator[](Var var) const {
       switch (var) {
@@ -43,7 +45,7 @@ class PointEquation {
           return y;
       }
       Assert(false, "Invalid variable");
-      std::unreachable();
+      assert(false);
     }
   };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Window.hpp>
+#include <cstdint>
 
 namespace ComplexSolver {
 class ComplexSolverWindow final : public sf::Window {

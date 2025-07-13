@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <SFML/Graphics.hpp>
+#include <optional>
 
 #include "core/DistanceUtilities.h"
 #include "core/Equation.h"

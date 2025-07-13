@@ -16,7 +16,7 @@ class GarbageObjectCollector {
   [[nodiscard]] bool Empty() const { return objects_.empty(); }
 
   void Append(const GeometricObject* object) {
-    if (!std::ranges::contains(objects_, object)) {
+    if (std::ranges::find(objects_, object) == objects_.end()) {
       objects_.push_back(object);
     }
   }
