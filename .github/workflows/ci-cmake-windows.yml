@@ -11,15 +11,8 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Configure CMake
-      run: |
-        mkdir -p build
-        cd build
-        cmake .. -G "Visual Studio 17 2022"
-
-    - name: Build
-      working-directory: ./build
-      run: cmake --build . --config Release
+    - name: Build with build_windows.bat
+      run: build_windows.bat
 
     - name: Run Tests
       working-directory: ./build
