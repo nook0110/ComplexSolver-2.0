@@ -38,5 +38,7 @@ RUN git reset --hard && \
     cmake .. && \
     cmake --build .
 
+WORKDIR /ComplexSolver/build
+
 # Default command to run tests
 CMD ["ctest", "--output-on-failure"]

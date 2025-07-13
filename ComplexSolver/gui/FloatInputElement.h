@@ -16,6 +16,9 @@ class FloatInputElementBody : public UniquePlaneObserver {
   void Draw();
 
   float GetValue() const;
+
+ private:
+  float value_ = {};
 };
 
 /**

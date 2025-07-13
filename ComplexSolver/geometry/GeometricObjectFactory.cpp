@@ -45,7 +45,7 @@ Line* LineByTwoPointsFactory::operator()(Point* first, Point* second) const {
   if (first == second) return nullptr;
 
   // Create construction
-  auto construction = std::make_unique<class ByTwoPoints>(first, second);
+  auto construction = std::make_unique<ByTwoPoints>(first, second);
 
   const auto line = construction->GetLine();
 

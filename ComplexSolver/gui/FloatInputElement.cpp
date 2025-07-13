@@ -9,13 +9,10 @@ FloatInputElementBody::FloatInputElementBody(Plane* plane)
 
 void FloatInputElementBody::Draw() {
   ImGui::PushID(this);
-  ImGui::InputFloat(
-      "Value", ImGui::GetStateStorage()->GetFloatRef(ImGui::GetID(this), 0.f));
+  ImGui::InputFloat("Value", &value_, 0.f);
   ImGui::PopID();
 }
 
-float FloatInputElementBody::GetValue() const {
-  return ImGui::GetStateStorage()->GetFloat(ImGui::GetID(this));
-}
+float FloatInputElementBody::GetValue() const { return value_; }
 
 }  // namespace ComplexSolver
