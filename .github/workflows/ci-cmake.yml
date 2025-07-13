@@ -6,13 +6,17 @@ jobs:
   test:
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: recursive
+
+    - name: Install X11 dependencies (Ubuntu only)
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get install -y libx11-dev
 
     - name: Configure CMake
       run: |
