@@ -9,3 +9,7 @@ add_library(ComplexSolverGuiElements STATIC ${GUI_ELEMENTS_SOURCES} ${GUI_ELEMEN
 target_include_directories(ComplexSolverGuiElements PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+target_link_libraries(ComplexSolverGuiElements PUBLIC
+    ComplexSolverGuiUtils
+)

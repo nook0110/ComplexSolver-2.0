@@ -4,6 +4,7 @@
 #include <SFML/Window.hpp>
 
 #include "core/Assert.h"
+
 namespace ComplexSolver {
 EventConverter::EventConverter(sf::RenderWindow* window) : window_(window) {
   InitActionMap();

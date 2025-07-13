@@ -3,30 +3,48 @@ name: CMake Tests
 on: [push]
 
 jobs:
-  build:
-    runs-on: windows-latest
-
-    defaults:
-      run:
-        shell: cmd
+  test:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Configure CMake
-      run: cmake -S "${{runner.workspace}}\HomoGebra\HomoGebra Tests" -B "${{runner.workspace}}\HomoGebra\HomoGebra Tests\build" -G "Visual Studio 17 2022"
+      run: |
+        mkdir -p build
+        cd build
+        if [[ "${{ runner.os }}" == "Windows" ]]; then
+          cmake .. -G "Visual Studio 17 2022"
+        else
+          cmake ..
+        fi
 
     - name: Build
-      working-directory: ${{runner.workspace}}\HomoGebra\HomoGebra Tests\build
-      run: cmake --build . --config Release
+      working-directory: ./build
+      run: |
+        if [[ "${{ runner.os }}" == "Windows" ]]; then
+          cmake --build . --config Release
+        else
+          cmake --build .
+        fi
 
-    - name: Test
-      working-directory: ${{runner.workspace}}\HomoGebra\HomoGebra Tests\build
-      run: ctest -V > test_res.xml
+    - name: Run Tests
+      working-directory: ./build
+      run: |
+        if [[ "${{ runner.os }}" == "Windows" ]]; then
+          ctest -C Release --output-on-failure
+        else
+          ctest --output-on-failure
+        fi
 
     - name: Upload test results
-      uses: actions/upload-artifact@v2
-      if: failure()
+      if: always()
+      uses: actions/upload-artifact@v3
       with:
-        name: test_res_xml
-        path: ${{runner.workspace}}\HomoGebra\HomoGebra Tests\build\test_res.xml
+        name: test-results-${{ matrix.os }}
+        path: |
+          build/Testing/**/*.xml
+          build/*.log

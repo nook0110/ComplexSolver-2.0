@@ -8,6 +8,7 @@ add_library(ComplexSolverGeometry STATIC ${GEOMETRY_SOURCES} ${GEOMETRY_HEADERS}
 target_link_libraries(ComplexSolverGeometry PUBLIC
     ComplexSolverObserver
     ComplexSolverCore
+    sfml-graphics
 )
 
 # Set include directories

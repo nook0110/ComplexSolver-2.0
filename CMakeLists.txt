@@ -41,7 +41,7 @@ include_directories(SFML/include
 
 # Add main project
 add_subdirectory(ComplexSolver)
-
+add_subdirectory(Tests)
 
 # Treat warnings as errors
 add_compile_options(-Wall -Werror)

@@ -3,6 +3,7 @@
 
 #include "ButtonImplementation.h"
 #include "utils/Indent.h"
+
 namespace ComplexSolver {
 
 /**

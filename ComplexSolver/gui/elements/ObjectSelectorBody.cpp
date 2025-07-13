@@ -1,4 +1,4 @@
-#include "ButtonElementBody.h"
+#include "ObjectSelectorBody.h"
 
 #include <imgui.h>
 #include <misc/cpp/imgui_stdlib.h>
@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "core/Assert.h"
-#include "GuiUtilities.h"
 #include "geometry/GeometricObject.h"
+#include "gui/utils/ObjectNameGetter.h"
 #include "plane/Plane.h"
 
 namespace ComplexSolver {

@@ -1,4 +1,4 @@
-#include "GuiUtilities.h"
+#include "ObjectNameGetter.h"
 
 #include "geometry/GeometricObject.h"
 

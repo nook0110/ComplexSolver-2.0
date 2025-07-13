@@ -1,6 +1,5 @@
 #pragma once
 
-#include "gui/ButtonElementBody.h"
 #include "observer/Observer.h"
 
 namespace ComplexSolver {

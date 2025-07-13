@@ -1,6 +1,10 @@
 #pragma once
 #include <imgui.h>
 
+#include <utility>
+
+namespace ComplexSolver {
+
 class IndentGuard {
  public:
   IndentGuard(float size = 5.f) : indent_(size / 2, size) {
@@ -36,3 +40,18 @@ class IndentGuard {
   static constexpr auto kColor = IM_COL32(255, 255, 255, 16);
   ImVec2 indent_;
 };
+
+class Plane;
+
+template <class Element>
+class IndentWrapper : public Element {
+ public:
+  using Element::Element;
+
+  void Draw() {
+    IndentGuard guard;
+    Element::Draw();
+  }
+};
+
+}  // namespace ComplexSolver

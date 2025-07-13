@@ -1,12 +1,12 @@
 #pragma once
+#include <imgui.h>
+
 #include "Button.h"
-#include "Equation.h"
 #include "PointEquationElement.h"
+#include "TextInputElement.h"
 #include "elements/ObjectSelector.h"
 #include "geometry/GeometricObject.h"
 #include "geometry/GeometricObjectFactory.h"
-#include "gui/TextInputElement.h"
-#include "imgui.h"
 
 namespace ComplexSolver {
 /**
@@ -94,9 +94,10 @@ class PointOnPlaneButton final
  * plane.
  */
 class LineByTwoPointButton final
-    : public WindowButton<ApplyButton<ButtonElement<
-          ButtonElement<ObjectSelector<Point>, ObjectSelector<Point>,
-                        FactoryWrapper<LineByTwoPointsFactory>>>>> {
+    : public WindowButton<
+          ApplyButton<ButtonElement<IndentWrapper<ObjectSelector<Point>>,
+                                    IndentWrapper<ObjectSelector<Point>>,
+                                    FactoryWrapper<LineByTwoPointsFactory>>>> {
  public:
   /**
    * @brief Constructs a new LineByTwoPointButton object.

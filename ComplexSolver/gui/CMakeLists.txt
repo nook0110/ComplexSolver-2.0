@@ -11,6 +11,7 @@ target_link_libraries(ComplexSolverGui PUBLIC
 
 # Include elements subdirectory (will create its own target)
 add_subdirectory(elements)
+add_subdirectory(utils)
 
 # Set include directories
 target_include_directories(ComplexSolverGui PUBLIC
