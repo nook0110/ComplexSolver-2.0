@@ -11,27 +11,10 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install dependencies
+    - name: Setup and Build
       run: |
-        sudo apt-get update
-        sudo apt-get install -y g++-15
-        sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev libudev-dev libfreetype-dev
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-15 100
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/clang++-15 100
-
-    - name: Configure CMake
-      run: |
-        mkdir -p build
-        cd build
-        cmake ..
-
-    - name: Build
-      working-directory: ./build
-      run: cmake --build .
-
-    - name: Run Tests
-      working-directory: ./build
-      run: ctest --output-on-failure
+        chmod +x setup.sh
+        ./setup.sh
 
     - name: Upload test results
       if: always()
