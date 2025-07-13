@@ -1,11 +1,13 @@
 ﻿#include "GeometricObjectFactory.h"
+
 #include <string_view>
 
 #include "ObjectConstruction.h"
 #include "plane/Plane.h"
 
 namespace ComplexSolver {
-Point* PointOnPlaneFactory::operator()(PointEquation equation, std::string_view name) const {
+Point* PointOnPlaneFactory::operator()(PointEquation equation,
+                                       std::string_view name) const {
   // Create construction
   auto construction = std::make_unique<PointOnPlane>(std::move(equation));
 
@@ -43,6 +45,7 @@ Line* LineOnPlaneFactory::operator()(LineEquation equation) const {
 
 Line* LineByTwoPointsFactory::operator()(Point* first, Point* second) const {
   if (first == second) return nullptr;
+  if (first == nullptr || second == nullptr) return nullptr;
 
   // Create construction
   auto construction = std::make_unique<ByTwoPoints>(first, second);

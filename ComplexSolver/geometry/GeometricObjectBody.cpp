@@ -12,7 +12,6 @@
 #include "SFML/Graphics/RenderTarget.hpp"
 #include "SFML/Graphics/Vertex.hpp"
 #include "SFML/System/Vector2.hpp"
-#include "core/Assert.h"
 #include "misc/Font.h"
 
 namespace ComplexSolver {
